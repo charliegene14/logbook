@@ -1,5 +1,5 @@
-<?php $pageTitle = 'Projets'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Projets'; ?>
+<?php  ob_start(); ?>
 
 <section class="projects">
 
@@ -7,8 +7,7 @@
 
 		<button class="button-left" onclick="changeSlide(-1)"></button>
 
-				<?while ($PROJ = $list->fetch()) {
-				?>
+				<?php while ($PROJ = $list->fetch()) : ?>
 
 					<article class="previewProject">
 						<div class="content">
@@ -23,7 +22,7 @@
 									<b>Plateforme(s): </b><?=$PROJ['platformProject']?><br />
 									<b>Date de commencement: </b><?=$regex->date($PROJ['dateProject'])?><br />
 									<b>Version actuelle: </b>
-									<?
+									<?php
 										if ($lastVersion = $dbProj->getLastVersion($PROJ['idProject']))
 										{
 											echo '<a href="index.php?view=versions&id='.$PROJ['idProject'].'#'.$lastVersion['theVersion'].'">'.$lastVersion['theVersion'].'</a> - ';
@@ -36,7 +35,7 @@
 										}
 									?> <br />
 									<b>Premier article: </b>
-									<?
+									<?php
 										if ($firstPost = $dbProj->getFirstPost($PROJ['idProject']))
 										{
 											echo '<a href="index.php?view=fullpost&id='.$firstPost['idPost'].'">'.$firstPost['titlePost'].'</a><span class="liltxt"> (le '.$regex->date($firstPost['datePost']).')</span>';
@@ -47,7 +46,7 @@
 										}
 									?><br />
 									<b>Dernier article: </b>
-									<?
+									<?php
 										if ($lastPost = $dbProj->getLastPost($PROJ['idProject']))
 										{
 											echo '<a href="index.php?view=fullpost&id='.$lastPost['idPost'].'">'.$lastPost['titlePost'].'</a><span class="liltxt"> (le '.$regex->date($lastPost['datePost']).')</span>';
@@ -66,12 +65,13 @@
 						</div>
 					</article>
 
-				<?}?>
-					<article class="previewProject">
-						<p class="content">
-							<i>Pas d'autres projets pour le moment</i> <img src="public/css/smileys/smile.png" />
-						</p>
-					</article>
+				<?php endwhile; ?>
+
+				<article class="previewProject">
+					<p class="content">
+						<i>Pas d'autres projets pour le moment</i> <img src="public/css/smileys/smile.png" />
+					</p>
+				</article>
 
 		<button class="button-right" onclick="changeSlide(+1)"></button>
 
@@ -80,5 +80,5 @@
 </section>
 
 <script src="public/js/viewProjects.js"></script>
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

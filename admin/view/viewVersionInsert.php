@@ -1,5 +1,5 @@
-<?php $pageTitle = 'Ajouter une version - projet '; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Ajouter une version - projet '; ?>
+<?php  ob_start(); ?>
 
 <section class="viewVersionInsert">
     <p><a href="index.php">Retourner au panneau principal</a></p>
@@ -30,5 +30,5 @@
     </form>
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

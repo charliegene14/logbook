@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once 'model/calendar.php';
 require_once 'model/dbPosts.php';
 require_once 'model/dbCategories.php';
@@ -28,7 +28,6 @@ function viewCalendar()
 
     $postsMonth = $dbPosts->getMonthList($_GET['month'] ?? null, $_GET['year'] ?? null);
     $listCats = $dbCats->getAll();
-    //$listTools = json_encode($dbTools->getAll()->fetchAll());
 
     $totalHoursInMonth = $dbPosts->getHoursInMonth($_GET['month'] ?? null, $_GET['year'] ?? null);
     $totalAverageHoursInMonth = $dbPosts->getAverageHoursInMonth($_GET['month'] ?? null, $_GET['year'] ?? null);
@@ -42,6 +41,13 @@ function viewCalendar()
     $toolsHoursInMonth = json_encode($dbTools->getHoursInMonth($_GET['month'] ?? null, $_GET['year'] ?? null));;
     $toolsHoursInYear = json_encode($dbTools->getHoursInYear($_GET['year'] ?? null));
     $toolsHours = json_encode($dbTools->getTotalHours());
+
+    $catsHoursInAllMonth = [];
+
+    for($i = 1; $i < 12; $i++) {
+        $dataCats = $dbCats->getHoursInMonth($i, $_GET['year'] ?? null);
+        array_push($catsHoursInAllMonth, $dataCats);
+    }
 
     require 'view/viewCalendar.php';
 }

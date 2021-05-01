@@ -1,5 +1,5 @@
-<?php $pageTitle = 'Gestion du projet - '.$PROJ['titleProject']; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Gestion du projet - '.$PROJ['titleProject']; ?>
+<?php  ob_start(); ?>
 
 <section class="viewProjectUpdate">
     <p><a href="index.php?view=projects">Retourner au gestionnaire de projets</a></p>
@@ -67,17 +67,17 @@
         <div class="versions">
             <h2>Versions:</h2>
             <a href="index.php?view=versioninsert&project=<?=$PROJ['idProject']?>">Ajouter une version</a>
-            <? while ($VERSION = $listVersions->fetch()) { ?>
+            <?php while ($VERSION = $listVersions->fetch()) { ?>
                 <p>
                     <a href="index.php?view=versionupdate&id=<?=$VERSION['idVersion']?>">
                         <?=$VERSION['theVersion']?>
                     </a>
                     (<?=$regex->date($VERSION['dateVersion'])?>)
                 </p>
-            <? } ?>
+            <?php } ?>
         </div>
     </div>
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

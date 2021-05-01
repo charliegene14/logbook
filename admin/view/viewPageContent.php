@@ -1,10 +1,10 @@
-<?php $pageTitle='Gérer le contenu de page'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle='Gérer le contenu de page'; ?>
+<?php  ob_start(); ?>
 
 <section class="viewPageContent">
 	<p><a href="index.php?view=pages">Retourner au gestionnaire de pages</a></p>
 
-	<?php
+	<?php 
 	echo '<h1>"'.$PAGE['titlePage'].'"</h1>
 
 		<form method="post" action="index.php?view=pagecontent&id='.$ID.'&update&token='.$_SESSION['token'].'" enctype="multipart/form-data">
@@ -34,5 +34,5 @@
 	?>
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require 'template.php' ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require 'template.php' ?>

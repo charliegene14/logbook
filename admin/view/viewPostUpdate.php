@@ -1,10 +1,10 @@
-<?php $pageTitle='Modifier un article'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle='Modifier un article'; ?>
+<?php  ob_start(); ?>
 
 <section class="viewPostUpdate">
 	<p><a href="index.php?view=posts">Retourner aux articles</a></p>
 
-	<?php
+	<?php 
 	echo '<h1>Article n°'.$ID.', "'.$POST['titlePost'].'" <a href="index.php?view=postupdate&id='.$ID.'&del&token='.$_SESSION['token'].'">[Supprimer]</a></h1>
 
 		<form method="post" action="index.php?view=postupdate&id='.$ID.'&update&token='.$_SESSION['token'].'" enctype="multipart/form-data">
@@ -99,5 +99,5 @@
 	?>
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require 'template.php' ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require 'template.php' ?>

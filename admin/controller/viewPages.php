@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once 'model/dbPages.php';
 require_once 'model/uploads.php';
 require_once 'model/regex.php';

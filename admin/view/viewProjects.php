@@ -1,5 +1,5 @@
-<?php $pageTitle = 'Gestion des projets'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Gestion des projets'; ?>
+<?php  ob_start(); ?>
 
 <section class="viewProjects">
     <p><a href="index.php">Retourner au panneau principal</a></p>
@@ -16,5 +16,5 @@
     
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

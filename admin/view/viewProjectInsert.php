@@ -1,5 +1,5 @@
-<?php $pageTitle = 'Ajouter un projet'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Ajouter un projet'; ?>
+<?php  ob_start(); ?>
 
 <section class="viewProjectInsert">
     <p><a href="index.php?view=projects">Retourner au gestionnaire de projets</a></p>
@@ -59,5 +59,5 @@
 
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

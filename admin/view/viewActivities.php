@@ -1,5 +1,5 @@
-<?php $pageTitle = 'Activités du site'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Activités du site'; ?>
+<?php  ob_start(); ?>
 
 <section class="viewConnected">
 
@@ -7,7 +7,7 @@
 		<p><a href="index.php">Retourner au panneau principal</a></p>
 		<p><i>(<?= $totalVisits ?> visiteurs au total)</i></p>
 		<fieldset>
-		<?php
+		<?php 
 
 		while ($IP = $listIP->fetch())
 		{
@@ -26,7 +26,7 @@
 
 	<div class="viewConnectedDate">
 		<fieldset>
-			<?php
+			<?php 
 			while ($DATE = $listDates->fetch())
 			{
 				if ($DATE['dateVisit'] == $_GET['date'])
@@ -43,9 +43,7 @@
 	</div>
 
 	<div class="viewConnectedDetails">
-			<?php
-			while ($DETAIL = $listDetails->fetch())
-			{?>
+			<?php  while ($DETAIL = $listDetails->fetch()): ?>
 
 				<fieldset>
 					<p>
@@ -55,11 +53,10 @@
 					</p>
 				</fieldset>
 
-			<?}
-			?>
+			<?php  endwhile; ?>
 	</div>
 	
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

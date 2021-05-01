@@ -1,4 +1,4 @@
-<?php
+<?php 
 	require_once 'model/dbInfos.php';
 	require_once 'model/dbNavigation.php';
 	require_once 'model/dbCategories.php';
@@ -30,7 +30,7 @@
 			<nav>
 				<ul>
 
-				<?
+				<?php 
 				while ($MENU = $navigation->fetch())
 				{
 

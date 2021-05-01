@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once 'model/dbPosts.php';
 require_once 'model/dbTools.php';
 require_once 'model/dbWorks.php';

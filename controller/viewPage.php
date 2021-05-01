@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once 'model/dbPages.php';
 
 function viewPage($fileName)

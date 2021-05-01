@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once 'model/dbCategories.php';
 require_once 'model/dbProjects.php';
 require_once 'model/dbVersions.php';

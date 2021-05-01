@@ -1,5 +1,5 @@
-<?php $pageTitle = 'Versions - '.$PROJ['titleProject'].''; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Versions - '.$PROJ['titleProject'].''; ?>
+<?php  ob_start(); ?>
 
 <section class="versions">
 
@@ -15,7 +15,7 @@
     </div>
 
     <div class="articles">
-        <? while ($VERSION = $listVersions->fetch()) { ?>
+        <?php while ($VERSION = $listVersions->fetch()) { ?>
             <article class="version" id="<?=$VERSION['theVersion']?>">
 
                 <div class="line">
@@ -44,8 +44,8 @@
                 </div>
 
             </article>
-        <? } ?>
+        <?php } ?>
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

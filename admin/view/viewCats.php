@@ -1,5 +1,5 @@
-<?php $pageTitle='Gestion des Catégories'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle='Gestion des Catégories'; ?>
+<?php  ob_start(); ?>
 
 <section class="viewCats">
 	<p><a href="index.php">Retourner au panneau principal</a></p>
@@ -14,7 +14,7 @@
 			</form>
 		</p>
 
-		<?php
+		<?php 
 		while($TOOL = $listTools->fetch())
 		{
 			echo '
@@ -46,7 +46,7 @@
 			</form>
 		</p>
 
-		<?php
+		<?php 
 		while($CAT = $listCats->fetch())
 		{
 			echo'
@@ -69,7 +69,7 @@
 	<div class="works">
 		<h1>Parties de travail:</h1>
 
-		<?php
+		<?php 
 		echo'
 			<p>
 				<form method="post" action="index.php?view=cats&works='.$_GET['works'].'&insertWorks&token='.$_SESSION['token'].'">
@@ -100,5 +100,5 @@
 
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require 'template.php' ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require 'template.php' ?>

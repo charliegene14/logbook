@@ -1,8 +1,8 @@
-<?php $pageTitle = 'Connexion'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Connexion'; ?>
+<?php  ob_start(); ?>
 
 <div class="block">
-	<?php
+	<?php 
 		echo'
 			<form method="post">
 					<fieldset>
@@ -17,5 +17,5 @@
 	?>
 </div>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require 'template.php'; ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require 'template.php'; ?>

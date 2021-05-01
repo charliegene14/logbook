@@ -1,10 +1,10 @@
-<?php $pageTitle='Ajouter un article'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle='Ajouter un article'; ?>
+<?php  ob_start(); ?>
 
 <section class="viewPostInsert">
 	<p><a href="index.php?view=posts">Retourner aux articles</a></p>
 
-	<?php
+	<?php 
 	echo '<h1>Ajouter un article (n° '.$newID.')</h1>
 
 		<form method="post" action="index.php?view=postinsert&insert&token='.$_SESSION['token'].'" enctype="multipart/form-data">
@@ -75,5 +75,5 @@
 	?>
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require 'template.php' ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require 'template.php' ?>

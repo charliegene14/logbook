@@ -1,5 +1,5 @@
-<?php $pageTitle = 'Panel'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Panel'; ?>
+<?php  ob_start(); ?>
 
 <section class="viewPanel">
 
@@ -13,7 +13,7 @@
 		<p><a href="index.php?view=posts">Gestionnaire d'articles.</a></p>
 	</article>
 
-	<?php
+	<?php 
 	while ($INFO = $list_infos->fetch())
 	{
 		echo '
@@ -55,5 +55,5 @@
 		</article>
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

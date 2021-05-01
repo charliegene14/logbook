@@ -1,5 +1,5 @@
-<?php $pageTitle = $PROJ['titleProject']; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = $PROJ['titleProject']; ?>
+<?php  ob_start(); ?>
 
 <section class="fullproject">
 	<div class="header">
@@ -14,7 +14,7 @@
 				<b>Plateforme(s): </b><?= $PROJ['platformProject'] ?><br />
 				<b>Date de commencement: </b><?= $regex->date($PROJ['dateProject']) ?><br />
 				<b>Version actuelle: </b>
-				<?
+				<?php
 				if ($lastVersion = $dbProj->getLastVersion($PROJ['idProject'])) {
 					echo '<a href="index.php?view=versions&id=' . $PROJ['idProject'] . '#' . $lastVersion['theVersion'] . '">' . $lastVersion['theVersion'] . '</a> - ';
 					echo '<span class="liltxt">';
@@ -24,7 +24,7 @@
 				}
 				?><br />
 				<b>Premier article: </b>
-				<?
+				<?php
 				if ($firstPost = $dbProj->getFirstPost($PROJ['idProject'])) {
 					echo '<a href="index.php?view=fullpost&id=' . $firstPost['idPost'] . '">' . $firstPost['titlePost'] . '</a><span class="liltxt"> (le ' . $regex->date($firstPost['datePost']) . ')</span>';
 				} else {
@@ -32,7 +32,7 @@
 				}
 				?><br />
 				<b>Dernier article: </b>
-				<?
+				<?php
 				if ($lastPost = $dbProj->getLastPost($PROJ['idProject'])) {
 					echo '<a href="index.php?view=fullpost&id=' . $lastPost['idPost'] . '">' . $lastPost['titlePost'] . '</a><span class="liltxt"> (le ' . $regex->date($lastPost['datePost']) . ')</span>';
 				} else {
@@ -92,7 +92,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@next"></script>
 
-<script>
+<script type="text/javascript">
 	Chart.register({
 		ChartDataLabels,
 	});
@@ -230,5 +230,5 @@
 	chartTools.update();
 </script>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

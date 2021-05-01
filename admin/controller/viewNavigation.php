@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once 'model/dbNavigation.php';
 
 function viewNavigation()

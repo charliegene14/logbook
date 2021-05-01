@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once 'model/dbPasswords.php';
 require_once 'model/dbInfos.php';
 require_once 'model/regex.php';

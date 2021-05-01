@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once 'model/database.php';
 
 class dbVersions extends database

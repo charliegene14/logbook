@@ -1,5 +1,5 @@
-<?php $pageTitle='Gestion des Articles'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle='Gestion des Articles'; ?>
+<?php  ob_start(); ?>
 
 <section class="viewPosts">
 	<p><a href="index.php">Retourner au panneau principal</a></p>
@@ -10,7 +10,7 @@
 
 				<select name="type" onChange="this.form.submit()">
 					<option value="">Toute catégorie</option>
-					<?php
+					<?php 
 						while ($CAT = $categories->fetch())
 						{
 							echo '<option value="'.$CAT['Type'].'"';
@@ -25,7 +25,7 @@
 
 				<select name="work" onChange="this.form.submit()">
 					<option value="">Toute partie de travail</option>
-					<?php
+					<?php 
 						while ($WORK = $workParts->fetch())
 						{
 							echo '<option value="'.$WORK['idWork'].'"';
@@ -40,7 +40,7 @@
 
 				<select name="tool" onChange="this.form.submit()">
 					<option value="">Tous les outils</option>
-					<?php
+					<?php 
 						while ($TOOL = $tools->fetch())
 						{
 							echo '<option value="'.$TOOL['idTool'].'"';
@@ -57,7 +57,7 @@
 		</form>
 	</aside>
 
-	<?php
+	<?php 
 	while ($POST = $REQ_POSTS->fetch())
 	{
 		echo '<p style="background-color: '.$POST['colorCat'].';">
@@ -92,7 +92,7 @@
 	?>
 
 	<p class="pages">
-		<?php
+		<?php 
 			for($PAGE=1; $PAGE <= $TOTAL_PAGE; $PAGE++)
 			{
 				if ($PAGE == $PAGE_NOW)
@@ -124,5 +124,5 @@
 	</p>
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require 'template.php' ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require 'template.php' ?>

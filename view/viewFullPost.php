@@ -1,9 +1,9 @@
-<?php ob_start(); ?>
+<?php  ob_start(); ?>
 
 <section class="news">
 	<article>
 
-		<?php 
+		<?php  
 			$POST = $FULLPOST->fetch();
 			$pageTitle = ''.$POST['titlePost'].'';
 
@@ -43,5 +43,5 @@
 	</article>
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

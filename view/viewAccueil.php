@@ -1,6 +1,6 @@
-<?php $pageTitle = 'Accueil'; ?>
+<?php  $pageTitle = 'Accueil'; ?>
 
-<?php ob_start(); ?>
+<?php  ob_start(); ?>
 
 <section class="index">
 	<article>
@@ -8,6 +8,6 @@
 	</article>
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
+<?php  $pageContent = ob_get_clean(); ?>
 
-<?php require 'template.php'; ?>
+<?php  require 'template.php'; ?>

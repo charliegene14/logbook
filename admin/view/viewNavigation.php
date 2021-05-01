@@ -1,5 +1,5 @@
-<?php $pageTitle = 'Panel'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Panel'; ?>
+<?php  ob_start(); ?>
 
 <section class="viewNavigation">
 	<article>
@@ -15,7 +15,7 @@
 		</form>
 
 		<p><h1>Liste des menus:</h1></p>
-		<?php
+		<?php 
 			while($MENU = $listNav->fetch())
 			{
 				echo '
@@ -37,5 +37,5 @@
 	</article>
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

@@ -1,6 +1,5 @@
-<?php $pageTitle = 'Calendrier & Stats'; ?>
-
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Calendrier & Stats'; ?>
+<?php  ob_start(); ?>
 
 <section class="calendar">
     <div class="fullcal">
@@ -31,9 +30,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <? for ($week = 0; $week < $month->getWeeks(); $week++) { ?>
+                    <?php for ($week = 0; $week < $month->getWeeks(); $week++) : ?>
                         <tr>
-                            <? for ($day = 0; $day < 7; $day++) {
+                            <?php
+                            for ($day = 0; $day < 7; $day++) {
                                 $daydate = (clone $firstGridDay)->modify('+ ' . ($day + $week * 7) . 'days');
 
                                 if (!$month->isInMonth($daydate)) {
@@ -52,14 +52,14 @@
                                                 <p>
                                                     <i><?= $post['titlePost'] ?></i><br />
                                                     <img src="public/css/workPost.png" />
-                                                    <? if ($post['nameWork'] != null) {
+                                                    <?php if ($post['nameWork'] != null) {
                                                         echo $post['nameWork'];
                                                     } else {
                                                         echo 'Aucune partie de travail';
                                                     } ?>
                                                     <br />
                                                     <img src="public/css/toolPost.png" />
-                                                    <? if ($post['nameTool'] != null) {
+                                                    <?php if ($post['nameTool'] != null) {
                                                         echo $post['nameTool'];
                                                     } else {
                                                         echo 'Aucun outil utilisé';
@@ -68,22 +68,22 @@
                                                     <img src="public/css/timePost.png" /> <b><?= $regex->time($post['timePost']) ?></b>
                                                 </p>
                                             </div>
-                        <?
-                                        }
+                                        <?php }
                                     }
                                     echo '</td>';
                                 }
                             }
-                            echo '</tr>';
-                        } ?>
+                            ?>
+                        </tr>
+                    <?php endfor; ?>
                 </tbody>
             </table>
         </article>
 
         <aside class="cal_legends">
-            <? while ($cat = $listCats->fetch()) { ?>
+            <?php while ($cat = $listCats->fetch()) : ?>
                 <p><span class="color" style="background-color: <?= $cat['colorCat'] ?>"></span> <?= $cat['nameCat'] ?></p>
-            <? } ?>
+            <?php endwhile; ?>
         </aside>
     </div>
 
@@ -186,7 +186,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@next"></script>
 
-<script>
+<script type="text/javascript">
     Chart.register({
         ChartDataLabels,
     });
@@ -400,6 +400,32 @@
         options: optionsBar
     });
 
+    var yearToolsBar = new Chart(ctxYearToolsBar, {
+        type: 'bar',
+        data: {
+            labels: [
+                'Jan.', 'Fev.', 'Mar.', 'Avr.', 'Mai', 'Juin', 'Jui.', 'Aou.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'
+            ],
+            datasets: [{
+                    data: [15, 11, 18, 100, 45, 58, 69, 54, 11, 48, 250, 74],
+                    label: 'HTML',
+                    backgroundColor: 'red',
+                },
+                {
+                    data: [78, 19, 18, 174, 41, 58, 69, 57, 11, 50, 250, 74],
+                    label: 'JS',
+                    backgroundColor: 'yellow',
+                },
+                {
+                    data: [15, 11, 18, 100, 45, 58, 69, 54, 11, 48, 250, 74],
+                    label: 'CSS',
+                    backgroundColor: 'blue',
+                }
+            ]
+        },
+        options: optionsBar
+    });
+
     var dbDataMonthCats = <?= $catsHoursInMonth ?>;
     var dbDataMonthTools = <?= $toolsHoursInMonth ?>;
     var dbDataYearCats = <?= $catsHoursInYear ?>;
@@ -467,8 +493,8 @@
     globalCats.update();
     globalTools.update();
     yearCatsBar.update();
+    yearToolsBar.update();
 </script>
 
 <?php $pageContent = ob_get_clean(); ?>
-
 <?php require 'template.php'; ?>

@@ -1,5 +1,5 @@
-<?php $pageTitle = 'Gestionnaire de pages'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Gestionnaire de pages'; ?>
+<?php  ob_start(); ?>
 
 <section class="viewPages">
 
@@ -15,7 +15,7 @@
 		</form>
 
 		<p><h1>Liste des pages:</h1></p>
-		<?php
+		<?php 
 			while($PAGE = $listPages->fetch())
 			{
 				echo '
@@ -40,5 +40,5 @@
 
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

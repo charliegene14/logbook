@@ -1,5 +1,5 @@
-<?php $pageTitle = 'Erreur'; ?>
-<?php ob_start(); ?>
+<?php  $pageTitle = 'Erreur'; ?>
+<?php  ob_start(); ?>
 
 <section class="warning">
 	<article>
@@ -8,5 +8,5 @@
 	</article>
 </section>
 
-<?php $pageContent = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+<?php  $pageContent = ob_get_clean(); ?>
+<?php  require('template.php'); ?>

@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once 'model/dbActivity.php';
 require_once 'model/regex.php';
 
