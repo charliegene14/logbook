@@ -1,0 +1,200 @@
+/*-------Définition de l'ensemble de la page et de la grille--------*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap');
+
+html
+{
+	background-color: #ffffee;
+}
+
+body
+{
+	font-family: 'Montserrat', sans-serif;
+	min-width: 600px;
+	max-width: 1200px;
+	margin: auto;
+	border-radius: 8px;
+	box-shadow: 4px 4px 10px black;
+	display: grid;
+	grid-template-rows: auto auto auto;
+	background-color: white;
+}
+
+/*-------En-tête du site---------*/
+
+header
+{
+ 	display: flex;
+	min-height: 120px;
+	width: 100%;
+	background-color: black;
+	background: url("ban.png") center;
+	background-size: cover;
+    margin-bottom: 40px;
+    border-radius: 0px 0px 7px 7px;
+    box-shadow: 4px 4px 10px grey;
+    text-shadow: -2px -2px 2px grey;
+    grid-row: 1;
+}
+
+
+header h1 /*Titre du site*/
+{
+	color: white;
+	font-weight: normal;
+	font-size: 4em;
+	margin: auto;
+}
+
+fieldset
+{
+	border-radius: 10px;
+}
+
+/*----------Contenu de la page à droite du menu------------*/
+
+section /*Toutes les sections de toute page*/
+{
+	grid-row: 2;
+	font-size: 0.9em;
+}
+
+textarea
+{
+	font-size: 15px;
+	font-family: Open Sans, sans-serif;
+}
+
+/*---------Contenu de page: panel------------------*/
+
+.viewPanel article
+{
+	width: 85%;
+	margin: auto;
+}
+
+/*---------Contenu de page: viewCats, viewCatsWorks, viewCatsTools---------*/
+
+.viewCats form
+{
+	color: white;
+	padding: 3px;
+	border-radius: 10px;
+}
+
+.viewCats .cats
+{
+	float: left;
+	max-width: 30%;
+	min-width: 220px;
+}
+
+.viewCats .works
+{
+	margin-left: 33%;
+}
+
+.viewCats .tools
+{
+	display: flex;
+}
+
+/*---------Contenu de page: block/error---------*/
+
+.block
+{
+	display: flex;
+	margin: auto;
+	text-align: center;
+}
+
+.warning
+{
+	display: flex;
+	background: url("warningbg.png") center;
+}
+
+.warning article
+{
+	margin: auto;
+	font-size: 1.1em;
+	text-align: center;
+}
+
+/*---------Contenu de pages viewPosts, viewPostUpdate, viewPostInsert---------*/
+
+.viewPosts
+{
+	text-align: center;
+}
+
+.viewPosts p
+{
+	padding: 5px;
+	font-size: 1.1em;
+	border-radius: 10px;
+}
+
+
+.viewPosts .sort
+{
+	display: flex;
+}
+
+.viewPosts .sort form
+{
+	margin: auto;
+}
+
+/*---------Contenu de pages viewProjects, versions...---------*/
+
+.viewProjectUpdate .project{
+	display: flex;
+}
+
+.viewProjectUpdate .project .infos{
+	width: 80%;
+}
+
+.viewProjectUpdate .project .versions{
+	border-left: 1px solid grey;
+	padding-left: 40px;
+}
+/*---------Contenu de pages viewConnected---------*/
+
+.viewConnected
+{
+	display: flex;
+	margin: auto;
+}
+
+.viewConnectedDate, .viewConnectedDetails
+{
+	margin-top: 80px;
+}
+
+.viewConnectedDetails
+{
+	max-width: 52%;
+}
+
+
+/*----------Pied de la page------------*/
+
+footer
+{
+	background-color: black;
+	background: url("foot.png") center;
+	background-size: cover;
+	border-radius: 7px 7px 0px 0px;
+	margin-top: 40px;
+	width: 100%;
+	grid-row: 3;
+
+}
+
+footer p
+{
+	text-align: center;
+	color: white;
+	font-size: 0.8em;
+}
