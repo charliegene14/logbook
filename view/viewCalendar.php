@@ -380,22 +380,7 @@
             labels: [
                 'Jan.', 'Fev.', 'Mar.', 'Avr.', 'Mai', 'Juin', 'Jui.', 'Aou.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'
             ],
-            datasets: [{
-                    data: [],
-                    label: 'HTML',
-                    backgroundColor: 'red',
-                },
-                {
-                    data: [78, 19, 18, 174, 41, 58, 69, 57, 11, 50, 250, 74],
-                    label: 'JS',
-                    backgroundColor: 'yellow',
-                },
-                {
-                    data: [15, 11, 18, 100, 45, 58, 69, 54, 11, 48, 250, 74],
-                    label: 'CSS',
-                    backgroundColor: 'blue',
-                }
-            ]
+            datasets: []
         },
         options: optionsBar
     });
@@ -406,28 +391,7 @@
             labels: [
                 'Jan.', 'Fev.', 'Mar.', 'Avr.', 'Mai', 'Juin', 'Jui.', 'Aou.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'
             ],
-            datasets: [
-                {
-                    data: [0, 11, 18, 100, 45, 58, 69, 54, 11, 48, 250, 74],
-                    label: 'HTML',
-                    backgroundColor: 'red',
-                },
-                {
-                    data: [50],
-                    label: 'HTML',
-                    backgroundColor: 'red',
-                },
-                {
-                    data: [78, 19, 18, 174, 41, 58, 69, 57, 11, 50, 250, 74],
-                    label: 'JS',
-                    backgroundColor: 'yellow',
-                },
-                {
-                    data: [15, 11, 18, 100, 45, 58, 69, 54, 11, 48, 250, 74],
-                    label: 'CSS',
-                    backgroundColor: 'blue',
-                }
-            ]
+            datasets: []
         },
         options: optionsBar
     });
@@ -441,7 +405,7 @@
     var dbDataCatsHoursInAllMonths   = <?= $jsCatsInAllMonth ?>;
     var dbDataToolsHoursInAllMonths  = <?= $jsToolsInAllMonth ?>;
 
-    var allMonthsCatData             = {};
+    var allMonthsCatData             = [];
     var allMonthsToolData            = {};
 
     dbDataGlobalTools.forEach((tool, index) => {
@@ -519,6 +483,16 @@
         });
     });
 
+    dbDataCatsHoursInAllMonths.map(array => {
+        array.map(data => {
+            Object.keys(allMonthsCatData[data.nameCat].months).forEach(month => {
+                if (month == data.Month) {
+                    allMonthsCatData[data.nameCat].months[month] = data.totalFloat;
+                }
+            });
+        });
+    });
+
     dbDataToolsHoursInAllMonths.map(array => {
         array.map(data => {
             allMonthsToolData[data.nameTool] = {
@@ -541,16 +515,6 @@
         });
     });
 
-    dbDataCatsHoursInAllMonths.map(array => {
-        array.map(data => {
-            Object.keys(allMonthsCatData[data.nameCat].months).forEach(month => {
-                if (month == data.Month) {
-                    allMonthsCatData[data.nameCat].months[month] = data.totalFloat;
-                }
-            });
-        });
-    });
-
     dbDataToolsHoursInAllMonths.map(array => {
         array.map(data => {
             Object.keys(allMonthsToolData[data.nameTool].months).forEach(month => {
@@ -561,7 +525,17 @@
         });
     });
  
-    console.log(allMonthsToolData)
+    Object.entries(allMonthsCatData).forEach((cat, index) => {
+        console.log(Object.values(cat[1].months))
+
+        yearCatsBar.data.datasets.push(
+            {
+                label: cat[0],
+                data: Object.values(cat[1].months),
+                backgroundColor: cat[1].color,
+            }
+        );
+    });
 
     monthCats.update();
     monthTools.update();
