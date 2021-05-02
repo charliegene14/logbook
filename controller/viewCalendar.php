@@ -42,12 +42,33 @@ function viewCalendar()
     $toolsHoursInYear = json_encode($dbTools->getHoursInYear($_GET['year'] ?? null));
     $toolsHours = json_encode($dbTools->getTotalHours());
 
-    $catsHoursInAllMonth = [];
+    $catsHoursInAllMonths = [];
+    $toolsHoursInAllMonths = [];
 
-    for($i = 1; $i < 12; $i++) {
-        $dataCats = $dbCats->getHoursInMonth($i, $_GET['year'] ?? null);
-        array_push($catsHoursInAllMonth, $dataCats);
+    for ($i = 1; $i <= 12; $i++) {
+
+        $dataCats       = $dbCats->getHoursInMonth($i, $_GET['year'] ?? intval(date('Y')));
+        $dataTools      = $dbTools->getHoursInMonth($i, $_GET['year'] ?? intval(date('Y')));
+
+        $newCatsArray   = [];
+        $newToolsArray  = [];
+
+        foreach($dataCats as $cat){
+            $cat['Month'] = $i;
+            array_push($newCatsArray, $cat);
+        }
+
+        foreach($dataTools as $tool){
+            $tool['Month'] = $i;
+            array_push($newToolsArray, $tool);
+        }
+        
+        array_push  ($catsHoursInAllMonths  , $newCatsArray);
+        array_push  ($toolsHoursInAllMonths , $newToolsArray);
     }
+
+    $jsCatsInAllMonth   = json_encode($catsHoursInAllMonths);
+    $jsToolsInAllMonth  = json_encode($toolsHoursInAllMonths);
 
     require 'view/viewCalendar.php';
 }

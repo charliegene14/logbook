@@ -381,7 +381,7 @@
                 'Jan.', 'Fev.', 'Mar.', 'Avr.', 'Mai', 'Juin', 'Jui.', 'Aou.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'
             ],
             datasets: [{
-                    data: [15, 11, 18, 100, 45, 58, 69, 54, 11, 48, 250, 74],
+                    data: [],
                     label: 'HTML',
                     backgroundColor: 'red',
                 },
@@ -406,8 +406,14 @@
             labels: [
                 'Jan.', 'Fev.', 'Mar.', 'Avr.', 'Mai', 'Juin', 'Jui.', 'Aou.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'
             ],
-            datasets: [{
-                    data: [15, 11, 18, 100, 45, 58, 69, 54, 11, 48, 250, 74],
+            datasets: [
+                {
+                    data: [0, 11, 18, 100, 45, 58, 69, 54, 11, 48, 250, 74],
+                    label: 'HTML',
+                    backgroundColor: 'red',
+                },
+                {
+                    data: [50],
                     label: 'HTML',
                     backgroundColor: 'red',
                 },
@@ -426,12 +432,17 @@
         options: optionsBar
     });
 
-    var dbDataMonthCats = <?= $catsHoursInMonth ?>;
-    var dbDataMonthTools = <?= $toolsHoursInMonth ?>;
-    var dbDataYearCats = <?= $catsHoursInYear ?>;
-    var dbDataYearTools = <?= $toolsHoursInYear ?>;
-    var dbDataGlobalCats = <?= $catsHours ?>;
-    var dbDataGlobalTools = <?= $toolsHours ?>;
+    var dbDataMonthCats              = <?= $catsHoursInMonth ?>;
+    var dbDataMonthTools             = <?= $toolsHoursInMonth ?>;
+    var dbDataYearCats               = <?= $catsHoursInYear ?>;
+    var dbDataYearTools              = <?= $toolsHoursInYear ?>;
+    var dbDataGlobalCats             = <?= $catsHours ?>;
+    var dbDataGlobalTools            = <?= $toolsHours ?>;
+    var dbDataCatsHoursInAllMonths   = <?= $jsCatsInAllMonth ?>;
+    var dbDataToolsHoursInAllMonths  = <?= $jsToolsInAllMonth ?>;
+
+    var allMonthsCatData             = {};
+    var allMonthsToolData            = {};
 
     dbDataGlobalTools.forEach((tool, index) => {
         let color = colorScheme[Math.floor(Math.random() * colorScheme.length)];
@@ -485,6 +496,72 @@
         yearTools.data.datasets[0].backgroundColor.push(color);
         yearTools.data.datasets[0].borderColor.push(border)
     });
+
+    dbDataCatsHoursInAllMonths.map(array => {
+        array.map(data => {
+            allMonthsCatData[data.nameCat] = {
+                color: data.colorCat,
+                months: {
+                    1: '',
+                    2: '',
+                    3: '',
+                    4: '',
+                    5: '',
+                    6: '',
+                    7: '',
+                    8: '',
+                    9: '',
+                    10: '',
+                    11: '',
+                    12: '',
+                }
+            };
+        });
+    });
+
+    dbDataToolsHoursInAllMonths.map(array => {
+        array.map(data => {
+            allMonthsToolData[data.nameTool] = {
+                color: toolColor[data.nameTool],
+                months: {
+                    1: '',
+                    2: '',
+                    3: '',
+                    4: '',
+                    5: '',
+                    6: '',
+                    7: '',
+                    8: '',
+                    9: '',
+                    10: '',
+                    11: '',
+                    12: '',
+                }
+            };
+        });
+    });
+
+    dbDataCatsHoursInAllMonths.map(array => {
+        array.map(data => {
+            Object.keys(allMonthsCatData[data.nameCat].months).forEach(month => {
+                if (month == data.Month) {
+                    allMonthsCatData[data.nameCat].months[month] = data.totalFloat;
+                }
+            });
+        });
+    });
+
+    dbDataToolsHoursInAllMonths.map(array => {
+        array.map(data => {
+            Object.keys(allMonthsToolData[data.nameTool].months).forEach(month => {
+                if (month == data.Month) {
+                    allMonthsToolData[data.nameTool].months[month] = data.totalFloat;
+                }
+            });
+        });
+    });
+ 
+    console.log(allMonthsToolData)
 
     monthCats.update();
     monthTools.update();
