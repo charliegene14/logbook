@@ -5,14 +5,14 @@
     <p><a href="index.php">Retourner au panneau principal</a></p>
     <p><a href="index.php?view=projectinsert">Ajouter un projet</a></p>
     
-    <?while ($PROJ = $listProj->fetch()) {?>
+    <?php while ($PROJ = $listProj->fetch()) :?>
 
         <p>
             <b><?=$PROJ['titleProject']?>:</b>
             <a href="index.php?view=projectupdate&id=<?=$PROJ['idProject']?>">Gérer le projet</a>
         </p>
 
-    <?}?>
+    <?php endwhile; ?>
     
 </section>
 

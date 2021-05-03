@@ -17,7 +17,7 @@
 	{
 		echo '
 			<article class="updateInfos">
-				<form method="post" action="index.php?update='.$INFO['nameInfo'].'&token='.$_SESSION['token'].'">
+				<form method="post" action="index.php?update='.$INFO['nameInfo'].'&amp;token='.$_SESSION['token'].'">
 						<fieldset>
 							<legend>' .$INFO['nameInfo']. '</legend>
 								<p>
