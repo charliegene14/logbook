@@ -11,7 +11,6 @@ require 'controller/viewProjects.php';
 require 'controller/viewFullproject.php';
 require 'controller/viewVersions.php';
 require 'controller/viewCalendar.php';
-newActivity();
 
 try {
 	if (!isValidPass('Site')) {

@@ -3,13 +3,11 @@ session_start();
 require 'controller/global.php';
 require 'controller/viewAccueil.php';
 require 'controller/viewBlock.php';
-require 'controller/viewActivities.php';
 require 'controller/viewNavigation.php';
 require 'controller/viewCats.php';
 require 'controller/viewPosts.php';
 require 'controller/viewPages.php';
 require 'controller/viewProjects.php';
-newActivity();
 
 try
 {
@@ -76,10 +74,6 @@ try
 
 				case 'pagecontent':
 					viewPageContent();
-				break;
-
-				case 'activities':
-					viewActivities();
 				break;
 
 				case 'onwork':

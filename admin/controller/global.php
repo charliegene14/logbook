@@ -1,6 +1,5 @@
 <?php 
 require_once 'model/dbPasswords.php';
-require_once 'model/dbActivity.php';
 
 function isValidPass($namePass)
 {
@@ -22,17 +21,6 @@ function Error($message)
 function Workinprogress()
 {
 	require 'view/viewWorking.php';
-}
-
-function newActivity()
-{
-	$activity = new ActivityIP();
-	$activity->getActivity();
-	
-	if (!isset($_SESSION['token']))
-	{
-		$_SESSION['token'] = md5(bin2hex(openssl_random_pseudo_bytes(6)));
-	}
 }
 
 function isValidToken($string)

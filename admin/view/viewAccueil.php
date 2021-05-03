@@ -5,7 +5,6 @@
 
 	<article class="choicePanel">
 		<p>Bienvenue admin :)</p>
-		<p><a href="index.php?view=activities">Voir les activités client sur le site</a></p>
 		<p><a href="index.php?view=pages">Gestionnaire de pages.</a></p>
 		<p><a href="index.php?view=navigation">Gestionnaire du menu de navigation.</a></p>
 		<p><a href="index.php?view=projects">Gestionnaire de projets.</a></p>
