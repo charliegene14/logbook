@@ -16,7 +16,7 @@
                 </h2>
                 <a href="#stats">Voir les statistiques &darr;</a>
             </div>
-            <p style="margin: 0"><i>Passez sur les pastilles pour plus de détails !</i></p>
+            <p style="margin: 0"><i>Passez sur les pastilles et les graphiques pour plus de détails !</i></p>
             <table>
                 <thead>
                     <tr>
@@ -199,35 +199,52 @@
     }
 
     var colorScheme = [
-        'rgba(30, 50, 49,0.4)',
-        'rgba(72, 86, 101,0.4)',
-        'rgba(142, 124, 147,0.4)',
-        'rgba(208, 165, 192,0.4)',
-        'rgba(246, 192, 208,0.4)',
-        'rgba(251, 196, 171,0.4)',
-        'rgba(255, 218, 185,0.4)',
-        'rgba(209, 227, 221,0.4)',
-        'rgba(100, 166, 189,0.4)',
-        'rgba(227, 210, 111,0.4)',
-        'rgba(13, 0, 164,0.4)',
-        'rgba(34, 0, 124,0.4)',
-        'rgba(162, 37, 34,0.4)',
-        'rgba(143, 133, 125,0.4)',
-        'rgba(107, 109, 118,0.4)',
+        'rgba(30, 50, 49,0.6)',
+        'rgba(72, 86, 101,0.6)',
+        'rgba(142, 124, 147,0.6)',
+        'rgba(208, 165, 192,0.6)',
+        'rgba(246, 192, 208,0.6)',
+        'rgba(251, 196, 171,0.6)',
+        'rgba(255, 218, 185,0.6)',
+        'rgba(209, 227, 221,0.6)',
+        'rgba(100, 166, 189,0.6)',
+        'rgba(227, 210, 111,0.6)',
+        'rgba(13, 0, 164,0.6)',
+        'rgba(34, 0, 124,0.6)',
+        'rgba(162, 37, 34,0.6)',
+        'rgba(143, 133, 125,0.6)',
+        'rgba(107, 109, 118,0.6)',
     ];
 
     var toolColor = new Object();
 
     var optionsBar = {
         plugins: {
-            legend: {
+            datalabels: {
                 display: false,
             },
-            scales: {
-                y: {
-                    beginAtZero: true
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        var data = context.parsed.y;
+
+                        if (data % 1 != 0) {
+                            var hour = Math.floor(data);
+                            var min = Math.round((data % 1).toFixed(3) * 60);
+
+                            if (min < 10) {
+                                min = '0' + min;
+                            }
+
+                            return context.dataset.label + ': ' + hour + 'h' + min;
+
+                        } else {
+                            return context.dataset.label + ': ' + data + 'h';
+                        }
+                        
+                    }
                 }
-            },
+            }
         }
     };
 
@@ -409,7 +426,8 @@
     var allMonthsToolData            = {};
 
     dbDataGlobalTools.forEach((tool, index) => {
-        let color = colorScheme[Math.floor(Math.random() * colorScheme.length)];
+        var indexColor = Math.floor(Math.random() * colorScheme.length);
+        let color = colorScheme[indexColor];
         let border = alphaTranform(color);
 
         globalTools.data.labels.push(tool.nameTool);
@@ -418,6 +436,7 @@
         globalTools.data.datasets[0].borderColor.push(border);
 
         toolColor[tool.nameTool] = color;
+        colorScheme.splice(indexColor,1);
     });
 
     dbDataMonthCats.forEach((cat, index) => {
@@ -526,13 +545,21 @@
     });
  
     Object.entries(allMonthsCatData).forEach((cat, index) => {
-        console.log(Object.values(cat[1].months))
-
         yearCatsBar.data.datasets.push(
             {
                 label: cat[0],
                 data: Object.values(cat[1].months),
                 backgroundColor: cat[1].color,
+            }
+        );
+    });
+
+    Object.entries(allMonthsToolData).forEach((tool, index) => {
+        yearToolsBar.data.datasets.push(
+            {
+                label: tool[0],
+                data: Object.values(tool[1].months),
+                backgroundColor: tool[1].color,
             }
         );
     });
