@@ -2,21 +2,21 @@
 <?php  ob_start(); ?>
 
 <section class="block">
-	<?php 
-		echo'
-			<form method="post">
-				<p>
-					<fieldset>
-						<legend>
-							<label for="password">Mot de passe d\'accès au panneau d\'administration: <br /></label>
-						</legend>
 
-						<input type="password" name="password" id="password" autofocus required /><br />
-						<input type="submit" value="Valider" />
-					</fieldset>
-				</p>
-			</form>';
-	?>
+	<form method="post">
+
+		<?php if(!empty($_SESSION['Admin']) & !isValidPass('Admin')): ?>
+
+			<p style="color: red">Oops, mauvais mot de passe...</p>
+			<?php $_SESSION['Admin'] = null; ?>
+
+		<?php endif; ?>
+
+		<input type="password" name="password" id="password" placeholder="Mot de passe d'accès admin." autofocus required /><br />
+		<input type="submit" value="Valider" />
+
+	</form>
+
 </section>
 
 <?php  $pageContent = ob_get_clean(); ?>
