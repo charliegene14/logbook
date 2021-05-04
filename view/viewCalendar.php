@@ -306,6 +306,7 @@
     var ctxYearToolsBar = document.getElementById('yearToolsBar').getContext('2d');
     var ctxGlobalCats = document.getElementById('globalCats').getContext('2d');
     var ctxGlobalTools = document.getElementById('globalTools').getContext('2d');
+    var ctxYearRadar = document.getElementById('yearRadar').getContext('2d');
 
     var monthCats = new Chart(ctxMonthCats, {
         type: 'doughnut',
@@ -413,17 +414,91 @@
         options: optionsBar
     });
 
+    var yearRadar = new Chart(ctxYearRadar, {
+        type: 'radar',
+        data: {
+            labels: [
+                'Jan.', 'Fev.', 'Mar.', 'Avr.', 'Mai', 'Juin', 'Jui.', 'Aou.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'
+            ],
+            datasets: [
+                {
+                    label: 'Total',
+                    data: [],
+                    borderColor: 'black',
+                    borderWidth: 2,
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    display: false,
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            var data = context.parsed.r;
+
+                            if (data == 0) {
+                                return 'Aucune donnée';
+                            }
+
+                            if (data % 1 != 0) {
+                                var hour = Math.floor(data);
+                                var min = Math.round((data % 1).toFixed(3) * 60);
+
+                                if (min < 10) {
+                                    min = '0' + min;
+                                }
+
+                                return context.dataset.label + ': ' + hour + 'h' + min;
+
+                            } else {
+                                return context.dataset.label + ': ' + data + 'h';
+                            }
+                            
+                        }
+                    }
+                }
+            },
+            scales: {
+                r: {
+                    beginAtZero: true,
+                }
+            },
+
+        }
+    });
+
     var dbDataMonthCats              = <?= $catsHoursInMonth ?>;
     var dbDataMonthTools             = <?= $toolsHoursInMonth ?>;
     var dbDataYearCats               = <?= $catsHoursInYear ?>;
     var dbDataYearTools              = <?= $toolsHoursInYear ?>;
     var dbDataGlobalCats             = <?= $catsHours ?>;
     var dbDataGlobalTools            = <?= $toolsHours ?>;
-    var dbDataCatsHoursInAllMonths   = <?= $jsCatsInAllMonth ?>;
-    var dbDataToolsHoursInAllMonths  = <?= $jsToolsInAllMonth ?>;
+    var dbDataCatsHoursInAllMonths   = <?= $jsCatsInAllMonths ?>;
+    var dbDataToolsHoursInAllMonths  = <?= $jsToolsInAllMonths ?>;
+    var dbDataTotalHoursInAllMonths  = <?= $jsTotalInAllMonths ?>;
 
-    var allMonthsCatData             = [];
+    var allMonthsCatData             = {};
     var allMonthsToolData            = {};
+
+    var allMonthsTotalData           = {
+        months: {
+            1: '',
+            2: '',
+            3: '',
+            4: '',
+            5: '',
+            6: '',
+            7: '',
+            8: '',
+            9: '',
+            10: '',
+            11: '',
+            12: '',
+            }
+    };
 
     dbDataGlobalTools.forEach((tool, index) => {
         var indexColor = Math.floor(Math.random() * colorScheme.length);
@@ -543,6 +618,18 @@
             });
         });
     });
+
+    dbDataTotalHoursInAllMonths.map(data => {
+        Object.keys(allMonthsTotalData.months).forEach(month => {
+                if (month == data.Month) {
+                    allMonthsTotalData.months[month] = data.totalFloat;
+                }
+        });
+    });
+
+    Object.entries(allMonthsTotalData.months).forEach(month => {
+        yearRadar.data.datasets[0].data.push(month[1]);
+    });
  
     Object.entries(allMonthsCatData).forEach((cat, index) => {
         yearCatsBar.data.datasets.push(
@@ -572,6 +659,8 @@
     globalTools.update();
     yearCatsBar.update();
     yearToolsBar.update();
+    yearRadar.update();
+
 </script>
 
 <?php $pageContent = ob_get_clean(); ?>

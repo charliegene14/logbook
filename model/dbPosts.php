@@ -122,6 +122,7 @@ class dbPosts extends database
 		foreach ($array as $data) {
 			if ($data['totalStr'] == NULL) {
 				$data['totalStr'] = 'Aucune donnée';
+				$data['totalFloat'] = 0;
 			}
 			array_push($newArray, $data);
 		}

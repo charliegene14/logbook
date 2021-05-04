@@ -663,6 +663,10 @@ section a, section a:visited
 	width: 75%; 
 }
 
+.calendar .cal_stats .this_year .year_charts .radar {
+	margin: auto;
+}
+
 .calendar .cal_stats .this_year .year_charts .box .chart {
 	width: 100%;
 	margin: auto;
