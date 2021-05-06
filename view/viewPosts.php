@@ -84,9 +84,14 @@
 
 				<?php
 				} else {
-					echo ($regex->previewPost($POST['contentPost']));
-				}
-				?>
+					echo ($regex->previewPost($POST['contentPost'])) ?>
+					<br />
+					<br />
+					<button class="button-read" onClick="window.location.href='index.php?view=fullpost&amp;id=<?=$POST['idPost']?>'">
+						Lire la suite
+					</button>
+				
+				<?php }?>
 				</p>
 				
 			</div>
