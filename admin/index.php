@@ -23,6 +23,8 @@ try
 	}
 	else
 	{
+		newToken();
+		
 		if (!empty($_GET['view']))
 		{
 			$VIEWADMIN = $_GET['view'];
