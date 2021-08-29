@@ -1,5 +1,5 @@
 <?php 
-
+//new git branch test
 session_start();
 require 'controller/global.php';
 require 'controller/viewBlock.php';
