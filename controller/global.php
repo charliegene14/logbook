@@ -1,4 +1,13 @@
-<?php 
+<?php
+require 'controller/viewBlock.php';
+require 'controller/viewPage.php';
+require 'controller/viewAccueil.php';
+require 'controller/viewPosts.php';
+require 'controller/viewFullPost.php';
+require 'controller/viewProjects.php';
+require 'controller/viewFullproject.php';
+require 'controller/viewVersions.php';
+require 'controller/viewCalendar.php';
 require_once 'model/dbPasswords.php';
 
 function isValidPass($namePass)

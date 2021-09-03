@@ -4,48 +4,46 @@
 <section class="viewPostInsert">
 	<p><a href="index.php?view=posts">Retourner aux articles</a></p>
 
-	<?php 
-	echo '<h1>Ajouter un article (n° '.$newID.')</h1>
+	<h1>Ajouter un article (n°<?=$newID?>)</h1>
 
-		<form method="post" action="index.php?view=postinsert&insert&token='.$_SESSION['token'].'" enctype="multipart/form-data">
+		<form method="post" action="index.php?view=postinsert&insert&token=<?=$_SESSION['token']?>" enctype="multipart/form-data">
 			<fieldset>
 				<legend>Catégorie/Projet (Oblig.)</legend>
-				<select name="Type">';
-					while ($CAT = $listCats->fetch())
-					{
-						echo '<option value="'.$CAT['Type'].'">'.$CAT['Type'].'.'.$CAT['nameCat'].'</option>';
-					}
+				<select name="Type">
+					<?php while ($CAT = $listCats->fetch()): ?>
+						<option value="<?=$CAT['Type']?>"><?=$CAT['Type']?>. <?=$CAT['nameCat']?></option>
+					<?php endwhile;?>
 
-			echo'</select>
+			</select>
 			</fieldset>
 
 			<fieldset>
 				<legend>Partie de travail (Facult.)</legend>
 				<select name="Work">
-					<option value=NULL>Aucune partie de travail</option>';
-					while ($WORK = $listWorks->fetch())
-					{
-						echo '<option value="'.$WORK['idWork'].'">'.$WORK['typeCat'].'.'.$WORK['nameWork'].'</option>';
-					}
-					echo '
+					<option value=NULL>Aucune partie de travail</option>
+					<?php while ($WORK = $listWorks->fetch()):?>
+						<option value="<?=$WORK['idWork']?>"><?=$WORK['typeCat']?>. <?=$WORK['nameWork']?></option>
+					<?php endwhile;?>
 				</select>
 			</fieldset>
 
 			<fieldset>
 				<legend>Outil utilisé (Facult.)</legend>
-				<select name="Tool">
-					<option value=NULL>Aucun outil</option>';
-					while ($TOOL = $listTools->fetch())
-					{
-						echo '<option value="'.$TOOL['idTool'].'">'.$TOOL['nameTool'].'</option>';
-					}
-				echo '
-				</select>
-			</fieldset>
+				<?php for ($i=0; $i<8; $i++):?>
 
-			<fieldset>
-				<legend>Durée (Oblig.)</legend>
-				<input type="time" name="timePost" required />
+					<select name="tool[<?=$i?>][idTool]">
+						<option value=null>Aucun outil</option>
+
+						<?php foreach($toolsArray as $TOOL): ?>
+							<option value="<?=$TOOL['idTool']?>"><?=$TOOL['nameTool']?></option>
+						<?php endforeach; ?>
+
+					</select>
+					<input type="time" name="tool[<?=$i?>][timeTool]" value=NULL />
+					<br />
+
+				<?php endfor;?>
+
 			</fieldset>
 
 			<fieldset>
@@ -61,7 +59,7 @@
 			<fieldset>
 				<legend>Insertion d\'images (Facult.)</legend>
 				<input type="file" name="img[]" multiple />
-				<p>Accessible dans localhost/charliegene/public/img/posts/'.$newID.'-Numéro d\'ordre d\'upload.png</p>
+				<p>Accessible dans /public/img/posts/<?=$newID?>-Numéro d\'ordre d\'upload.png</p>
 			</fieldset>
 
 			<fieldset>
@@ -71,8 +69,7 @@
 
 			<input type="submit" value="Ajouter" />
 
-		</form>';
-	?>
+		</form>
 </section>
 
 <?php  $pageContent = ob_get_clean(); ?>

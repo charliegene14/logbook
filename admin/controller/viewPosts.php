@@ -25,6 +25,7 @@ function viewPostUpdate()
 
 		$GETPOST = $dbPosts->getPost($ID);
 		$POST = $GETPOST->fetch();
+		$toolsInPost = $dbPosts->getTools($ID);
 
 		$numberOfImg = $uploads->numberOfImg($ID);
 
@@ -32,13 +33,17 @@ function viewPostUpdate()
 		$listWorks = $dbWorks->getByType($POST['Type']);
 		$listTools = $dbTools->getAll();
 
+		$toolsArray = array();
+		while ($toolData = $listTools->fetch()) {
+			array_push($toolsArray, $toolData);
+		}
+
 		if (isset($_GET['update']) && isValidToken($_GET['token']))
 		{	
 			header('Location: index.php?view=postupdate&id='.$ID.'');
 			$TYPE = $_POST['Type'];
 			$WORK = $_POST['Work'];
-			$TOOL = $_POST['Tool'];
-			$TIME = $_POST['timePost'];
+
 			$TITLE = htmlspecialchars($_POST['titlePost']);
 			$DATE = $_POST['datePost'];
 			$CONTENT = $regex->fromBBCode($_POST['contentPost']);
@@ -48,7 +53,30 @@ function viewPostUpdate()
 				$uploads->uploadImg($ID);
 			}
 
-			$dbPosts->update($ID, $TYPE, $WORK, $TOOL, $TIME, $TITLE, $DATE, $CONTENT);
+			$dbPosts->update($ID, $TYPE, $WORK, $TITLE, $DATE, $CONTENT);
+
+			foreach ($_POST['tool'] as $tool) {
+
+				$timeTool = $tool['timeTool'];
+				$idTool = intval($tool['idTool']);
+
+				if ($idTool == 0) {$idTool = NULL; }
+
+				if ($timeTool == NULL || $timeTool == '00:00:00' || $timeTool == '00:00') {
+					
+					if ($tool['idTTP'] != NULL) {
+						$dbPosts->deleteTool($tool['idTTP']);
+					}
+
+				} else {
+					if ($tool['idTTP'] != NULL) {
+						$dbPosts->updateTool(intval($tool['idTTP']), $idTool, $ID, $timeTool);
+					} else {
+						$dbPosts->insertTool($idTool, $ID, $timeTool);
+					}
+				}
+			}
+
 			exit();
 		}
 		elseif (isset($_GET['del']) && isValidToken($_GET['token']))
@@ -74,15 +102,19 @@ function viewPostInsert()
 	$listWorks = $dbWorks->getAll();
 	$listTools = $dbTools->getAll();
 
+	$toolsArray = array();
+	while ($toolData = $listTools->fetch()) {
+		array_push($toolsArray, $toolData);
+	}
+
 	$newID = $dbPosts->getNumber('nextID');
 
 	if (isset($_GET['insert']) && isValidToken($_GET['token']))
 	{
 		header('Location: index.php?view=posts');
+
 		$TYPE = $_POST['Type'];
 		$WORK = $_POST['Work'];
-		$TOOL = $_POST['Tool'];
-		$TIME = $_POST['timePost'];
 		$TITLE = htmlspecialchars($_POST['titlePost']);
 		$DATE = $_POST['datePost'];
 		$CONTENT = $regex->fromBBCode($_POST['contentPost']);
@@ -91,9 +123,22 @@ function viewPostInsert()
 		{
 			$uploads->uploadImg($newID);
 		}
-		$dbPosts->insert($newID, $TYPE, $WORK, $TOOL, $TIME, $TITLE, $DATE, $CONTENT);
+
+		$dbPosts->insert($newID, $TYPE, $WORK, $TITLE, $DATE, $CONTENT);
+
+		foreach ($_POST['tool'] as $tool) {
+			$timeTool = $tool['timeTool'];
+				
+			if ($timeTool != NULL) {
+				if ($tool['idTool'] == 'null') {
+					$tool['idTool'] = NULL;
+				}
+				$dbPosts->insertTool($tool['idTool'],$newID, $tool['timeTool']);
+			}
+		}
 		exit();
 	}
+
 	require 'view/viewPostInsert.php';
 }
 
