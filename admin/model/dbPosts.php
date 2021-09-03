@@ -69,38 +69,6 @@ class dbPosts extends database
 		
 	}
 
-	public function getPostTest($idPost) {
-		$DB = $this->dbConnect();
-		$QUERY = $DB->prepare("SELECT *
-								FROM post p
-
-								LEFT JOIN category_post cp
-								ON p.Type = cp.Type
-
-								LEFT JOIN work_parts wp
-								ON p.Work = wp.idWork
-
-								LEFT JOIN tool_to_post ttp
-								ON p.idPost = ttp.idPost
-
-								LEFT JOIN tools t
-								ON ttp.idTool = t.idTool
-
-								WHERE p.idPost = ?
-								");
-
- 		if ($this->dbExist($QUERY, $idPost))
-		{
-			$QUERY->execute(array($idPost));
-
-			return $QUERY;
-		}
-		else
-		{
-			throw new Exception('Désolé, aucun article ici');
-		}
-	}
-
 	public function getPost($idPost)
 	{
 		$DB = $this->dbConnect();
