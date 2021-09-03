@@ -14,7 +14,7 @@
 			<?php if ($POST['Work'] != NULL) {
 					echo '<img src="public/css/workPost.png" />&nbsp;'.$POST['nameWork'].'<br /><br />';
 				} else {
-					echo '<img src="public/css/workPost.png" />&nbsp;Dans aucune partie de travail<br />';
+					echo '<img src="public/css/workPost.png" />&nbsp;Dans aucune partie de travail<br /><br />';
 				}
 				if ($toolsInPost != NULL) {
 
