@@ -53,8 +53,6 @@ class dbPosts extends database
 								ON p.Type = cp.Type
 								LEFT JOIN work_parts wp
 								ON p.Work = wp.idWork
-								LEFT JOIN tools t
-								ON p.Tool = t.idTool
 								WHERE idPost = ?");
 
 		if ($this->dbExist($QUERY, $idPost)) {
@@ -63,6 +61,23 @@ class dbPosts extends database
 		} else {
 			throw new Exception('Désolé, aucun article ici');
 		}
+	}
+
+	public function getTools($idPost) {
+		$DB = $this->dbConnect();
+		$QUERY = $DB->prepare("SELECT * FROM tool_to_post ttp
+								LEFT JOIN tools t
+								ON ttp.idTool = t.idTool
+								WHERE idPost = ?");
+
+		$QUERY->execute(array($idPost));
+
+		$array = [];
+		while ($data = $QUERY->fetch()) {
+			array_push($array, $data);
+		}
+
+		return $array;
 	}
 
 	public function getMonthList(?int $month = null, ?int $year = null): array

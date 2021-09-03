@@ -10,6 +10,8 @@ function viewFullPost()
 	if (!empty($_GET['id']) AND intval($_GET['id']))
 	{
 		$FULLPOST = $dbPosts->getPost($_GET['id']);
+		$toolsInPost = $dbPosts->getTools($_GET['id']);
+		
 		require('view/viewFullPost.php');
 	}
 		
