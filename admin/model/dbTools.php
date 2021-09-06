@@ -13,24 +13,27 @@ class dbTools extends database
 
 	public function getByType($typeCat)
 	{
-		$DB= $this->dbConnect();
+		$DB = $this->dbConnect();
 		$QUERY = $DB->prepare("SELECT t.idTool, t.nameTool FROM tools t
+								INNER JOIN tool_to_post ttp
+								ON t.idTool = ttp.idTool
 								INNER JOIN post p 
-								ON t.idTool = p.Tool
+								ON ttp.idPost = p.idPost
 								WHERE p.Type = ?
 								GROUP BY t.idTool");
 
-			$QUERY->execute(array($typeCat));
-			return $QUERY;
-
+		$QUERY->execute(array($typeCat));
+		return $QUERY;
 	}
 
 	public function getByWork($idWork)
 	{
-		$DB= $this->dbConnect();
+		$DB = $this->dbConnect();
 		$QUERY = $DB->prepare("SELECT t.idTool, t.nameTool FROM tools t
+								INNER JOIN tool_to_post ttp
+								ON t.idTool = ttp.idTool
 								INNER JOIN post p 
-								ON t.idTool = p.Tool
+								ON ttp.idPost = p.idPost
 								WHERE p.Work = ?
 								GROUP BY t.idTool");
 

@@ -13,12 +13,14 @@ class dbCategories extends database
 
 	public function getByTool($idTool)
 	{
-		$DB= $this->dbConnect();
+		$DB = $this->dbConnect();
 		$QUERY = $DB->prepare("SELECT cp.Type, cp.nameCat
 								FROM category_post cp
 								INNER JOIN post p 
 								ON cp.Type = p.Type
-								WHERE p.Tool = ?
+								INNER JOIN tool_to_post ttp
+								ON ttp.idPost = p.idPost
+								WHERE ttp.idTool = ?
 								GROUP BY cp.Type");
 
 		$QUERY->execute(array($idTool));
@@ -27,7 +29,7 @@ class dbCategories extends database
 
 	public function getByWork($idWork)
 	{
-		$DB= $this->dbConnect();
+		$DB = $this->dbConnect();
 		$QUERY = $DB->prepare("SELECT cp.Type, cp.nameCat
 								FROM category_post cp
 								INNER JOIN post p 

@@ -138,9 +138,12 @@ class dbProjects extends database
 	{
 		$DB = $this->dbConnect();
 
-		$QUERY = $DB->prepare('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(timePost)))
-								AS total
-								FROM post p
+
+
+		$QUERY = $DB->prepare('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(timeTool))) AS total
+								FROM tool_to_post ttp
+								INNER JOIN post p
+								ON ttp.idPost = p.idPost
 								LEFT JOIN projects prj
 								ON p.Type = prj.TypeCat
 								WHERE prj.idProject = ?');
@@ -155,10 +158,14 @@ class dbProjects extends database
 		$DB = $this->dbConnect();
 
 		$QUERY = $DB->prepare('SELECT p.Work,
-								SUM(TIME_TO_SEC(p.timePost)) / 3600 as hoursFloat,
-								SEC_TO_TIME(SUM(TIME_TO_SEC(p.timePost))) as hoursStr,
+								SUM(TIME_TO_SEC(ttp.timeTool)) / 3600 as hoursFloat,
+								SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool))) as hoursStr,
 								wp.nameWork
-								FROM post p
+								FROM tool_to_post ttp
+								
+								INNER JOIN post p
+								ON ttp.idPost = p.idPost
+
 								LEFT JOIN work_parts wp
 								ON p.Work = wp.idWork
 								LEFT JOIN projects prj
@@ -184,17 +191,22 @@ class dbProjects extends database
 	{
 		$DB = $this->dbConnect();
 
-		$QUERY = $DB->prepare('SELECT p.Tool,
-									SUM(TIME_TO_SEC(p.timePost)) / 3600 as hoursFloat,
-									SEC_TO_TIME(SUM(TIME_TO_SEC(p.timePost))) as hoursStr,
+		$QUERY = $DB->prepare('SELECT
+									SUM(TIME_TO_SEC(ttp.timeTool)) / 3600 as hoursFloat,
+									SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool))) as hoursStr,
 									t.nameTool
-								FROM post p
+								FROM tool_to_post ttp
+
+								INNER JOIN post p
+								ON ttp.idPost = p.idPost
+
 								LEFT JOIN tools t
-								ON p.Tool = t.idTool
+								ON ttp.idTool = t.idTool
+								
 								LEFT JOIN projects prj
 								ON p.Type = prj.typeCat
 								WHERE prj.idProject = ?
-								GROUP BY p.Tool');
+								GROUP BY ttp.idTool');
 
 		$QUERY->execute(array($idProject));
 		$tools = $QUERY->fetchAll();

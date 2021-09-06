@@ -4,44 +4,16 @@ require_once 'model/database.php';
 
 class dbPosts extends database
 {
-	public function getList($wherePost, $postByPage)
-	{
-		$DB = $this->dbConnect();
-
-		$REQ_TOTAL_POSTS = $DB->prepare("SELECT COUNT(idPost) AS total FROM post p WHERE $wherePost");
-		$REQ_TOTAL_POSTS->execute();
-
-		$TOTAL_POSTS = $REQ_TOTAL_POSTS->fetch()['total'];
-		$TOTAL_PAGE = ceil($TOTAL_POSTS / $postByPage);
-
-		if (isset($_GET['pg']) and intval($_GET['pg']) and $_GET['pg'] > 0) {
-			$PAGE_NOW = $_GET['pg'];
-			if ($PAGE_NOW > $TOTAL_PAGE) {
-				throw new Exception('Désolé, la page demandée n\'éxiste pas.');
-			}
-		} else {
-			$PAGE_NOW = 1;
-		}
-
-		$FIRST_POST = ($PAGE_NOW - 1) * $postByPage;
-
-		$REQ_POSTS = $DB->prepare("SELECT * FROM post p
-							INNER JOIN category_post cp
-							ON p.Type = cp.Type
-							LEFT JOIN work_parts wp
-							ON p.Work = wp.idWork
-							LEFT JOIN tools t
-							ON p.Tool = t.idTool
-							WHERE $wherePost
-							ORDER BY p.datePost DESC, p.idPost DESC
-							LIMIT $FIRST_POST, $postByPage");
-
-		if ($this->dbExist($REQ_POSTS, NULL)) {
-			$REQ_POSTS->execute();
-			return [$REQ_POSTS, $TOTAL_PAGE, $PAGE_NOW];
-		} else {
-			throw new Exception('Désolé, une erreur est survenue');
-		}
+	public function getAll() {
+		$db = $this->dbConnect();
+		$query = $db->prepare(' SELECT * FROM post p
+                                LEFT JOIN category_post cp ON p.Type = cp.Type
+                                LEFT JOIN work_parts wp ON p.Work = wp.idWork
+                                LEFT JOIN tool_to_post ttp ON p.idPost = ttp.idPost
+                                LEFT JOIN tools t ON ttp.idTool = t.idTool
+                                ORDER BY p.datePost DESC, p.idPost DESC');
+        $query->execute();
+		return $query;
 	}
 
 	public function getPost($idPost)

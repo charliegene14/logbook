@@ -1,5 +1,5 @@
 <?php  $pageTitle = 'Articles'; ?>
-<?php  ob_start(); ?>
+<?php  ob_start();?>
 
 <section class="news">
 
@@ -11,14 +11,16 @@
 					<option value="">Toute catégorie</option>
 
 					<?php
-					while ($CAT = $categories->fetch()) {
-						echo '<option value="'.$CAT['Type'].'"';
+					if ($queryTypes != null) {
+					while ($CAT = $queryTypes->fetch()) {
+							echo '<option value='.$CAT['Type'];
 
-						if (!empty($_POST['type']) && $_POST['type'] == $CAT['Type'] OR !empty($_GET['type']) && $_GET['type'] == $CAT['Type']) {
-							echo 'selected';
+							if (!empty($_POST['type']) && $_POST['type'] == $CAT['Type'] OR !empty($_GET['type']) && $_GET['type'] == $CAT['Type']) {
+								echo ' selected';
+							}
+
+							echo '>'.$CAT['nameCat'].'</option>';
 						}
-
-						echo '>'.$CAT['nameCat'].'</option>';
 					}
 					?>
 				</select>
@@ -26,14 +28,16 @@
 				<select name="work" onChange="this.form.submit()">
 					<option value="">Toute partie de travail</option>
 
-					<?php 
-					while ($WORK = $workParts->fetch()) {
-						echo '<option value="'.$WORK['idWork'].'"';
+					<?php
+					if ($queryWorks != null) {
+						while ($WORK = $queryWorks->fetch()) {
+							echo '<option value='.$WORK['idWork'].'';
 
-						if (!empty($_POST['work']) && $_POST['work'] == $WORK['idWork'] OR !empty($_GET['work']) && $_GET['work'] == $WORK['idWork']) {
-							echo 'selected';
+							if (!empty($_POST['work']) && $_POST['work'] == $WORK['idWork']){
+								echo ' selected';
+							}
+							echo '>'.$WORK['nameWork'].'</option>';
 						}
-						echo '>'.$WORK['nameWork'].'</option>';
 					}
 					?>
 				</select>
@@ -41,16 +45,18 @@
 				<select name="tool" onChange="this.form.submit()">
 					<option value="">Tous les outils</option>
 
-					<?php 
-					while ($TOOL = $tools->fetch()) {
+					<?php
+					if ($queryTools != null) {
+						while ($TOOL = $queryTools->fetch()) {
 
-						echo '<option value="'.$TOOL['idTool'].'"';
+							echo '<option value='.$TOOL['idTool'];
 
-						if (!empty($_POST['tool']) AND $_POST['tool'] == $TOOL['idTool'] OR !empty($_GET['tool']) && $_GET['tool'] == $TOOL['idTool']) {
-							echo 'selected';
+							if (!empty($_POST['tool']) AND $_POST['tool'] == $TOOL['idTool']) {
+								echo ' selected';
+							}
+
+							echo '>'.$TOOL['nameTool'].'</option>';
 						}
-
-						echo '>'.$TOOL['nameTool'].'</option>';
 					}
 					?>
 				</select>
@@ -59,7 +65,7 @@
 		</form>
 	</aside>
 
-	<?php while ($POST = $REQ_POSTS->fetch()) : ?>
+	<?php foreach ($posts as $POST) : ?>
 		<article>
 
 			<h1 class="titlePost"><a href="index.php?view=fullpost&amp;id=<?=$POST['idPost']?>"><?=$POST['titlePost']?></a></h1>
@@ -97,37 +103,11 @@
 			</div>
 			<hr />
 		</article>
-	<?php endwhile; ?>
+	<?php endforeach; ?>
 
 	<p class="pages">
 		<?php 
-			for($PAGE=1; $PAGE <= $TOTAL_PAGE; $PAGE++)
-			{
-				if ($PAGE == $PAGE_NOW)
-				{
-				echo ' <strong> '.$PAGE.' </strong> ';
-				}
-				else
-				{
-					echo ' <a href="index.php?view=posts';
-						if (!empty($_GET['type']))
-						{
-							echo '&amp;type='.$_GET['type'].'';
-						}
-
-						if (!empty($_GET['work']))
-						{
-							echo '&amp;work='.$_GET['work'].'';
-						}
-
-						if (!empty($_GET['tool']))
-						{
-							echo '&amp;tool='.$_GET['tool'].'';
-						}
-
-						echo '&amp;pg='.$PAGE.'"> '.$PAGE.' </a>';
-				}
-			}
+		$filteredPosts->getPagination($_GET['pg']);
 		?>
 	</p>
 </section>

@@ -169,8 +169,8 @@
 					}
 				}
 			}
-		},
-	};
+		}
+	}
 
 	var ctxParts = document.getElementById('chartParts').getContext('2d');
 	var ctxTools = document.getElementById('chartTools').getContext('2d');

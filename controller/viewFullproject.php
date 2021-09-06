@@ -5,12 +5,12 @@ require_once 'model/regex.php';
 function viewFullproject()
 {
 	if (empty($_GET['id']) or !intval($_GET['id'])) {
+
 		throw new Exception('Désolé, aucun projet ici.');
+
 	} else {
 		$dbProj = new dbProjects();
 		$regex = new Regex();
-
-		$list = $dbProj->getAll();
 
 		$PROJ = $dbProj->getProject($_GET['id']);
 
