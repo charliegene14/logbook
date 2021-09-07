@@ -61,8 +61,6 @@ class dbPosts extends database
 								ON p.Type = cp.Type
 								LEFT JOIN work_parts wp
 								ON p.Work = wp.idWork
-								LEFT JOIN tools t
-								ON p.Tool = t.idTool
 								WHERE datePost BETWEEN ? AND ?');
 
 		if ($month == null || $year == null) {
@@ -85,10 +83,12 @@ class dbPosts extends database
 	{
 		$DB = $this->dbConnect();
 
-		$QUERY = $DB->prepare('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(timePost))) AS totalStr,
-								SUM(TIME_TO_SEC(timePost)) / 3600 AS totalFloat
+		$QUERY = $DB->prepare('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool))) AS totalStr,
+								SUM(TIME_TO_SEC(ttp.timeTool)) / 3600 AS totalFloat
 								FROM post p
-								WHERE datePost BETWEEN ? AND ?');
+								LEFT JOIN tool_to_post ttp
+								ON p.idPost = ttp.idPost
+								WHERE p.datePost BETWEEN ? AND ?');
 
 		if ($month == null || $year == null) {
 			$month = intval(date('m'));
@@ -130,9 +130,11 @@ class dbPosts extends database
 
 		$numDays = cal_days_in_month(0, $month, $year);
 
-		$QUERY = $DB->prepare("SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(timePost)) / $numDays) AS average
+		$QUERY = $DB->prepare("SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool)) / $numDays) AS average
 								FROM post p
-								WHERE datePost BETWEEN ? AND ?");
+								LEFT JOIN tool_to_post ttp
+								ON p.idPost = ttp.idPost
+								WHERE p.datePost BETWEEN ? AND ?");
 
 		$startDate = new DateTime($year . '-' . $month . '-01');
 		$startMonth = $startDate->format('Y-m-d');
@@ -153,9 +155,11 @@ class dbPosts extends database
 	{
 		$DB = $this->dbConnect();
 
-		$QUERY = $DB->prepare('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(timePost))) AS total
+		$QUERY = $DB->prepare('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool))) AS total
 								FROM post p
-								WHERE datePost BETWEEN ? AND ?');
+								LEFT JOIN tool_to_post ttp
+								ON p.idPost = ttp.idPost
+								WHERE p.datePost BETWEEN ? AND ?');
 
 		if ($year == null || $year < 1970 || $year > 2100) {
 			$year = intval(date('Y'));
@@ -180,8 +184,10 @@ class dbPosts extends database
 	{
 		$DB = $this->dbConnect();
 
-		$QUERY = $DB->prepare('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(timePost))) AS total
-								FROM post p');
+		$QUERY = $DB->prepare('SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool))) AS total
+								FROM post p
+								LEFT JOIN tool_to_post ttp
+								ON p.idPost = ttp.idPost');
 		$QUERY->execute();
 		$total = $QUERY->fetch()['total'];
 

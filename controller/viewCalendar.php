@@ -38,7 +38,7 @@ function viewCalendar()
     $catsHoursInYear = json_encode($dbCats->getHoursInYear($_GET['year'] ?? null));
     $catsHours = json_encode($dbCats->getTotalHours());
 
-    $toolsHoursInMonth = json_encode($dbTools->getHoursInMonth($_GET['month'] ?? null, $_GET['year'] ?? null));;
+    $toolsHoursInMonth = json_encode($dbTools->getHoursInMonth($_GET['month'] ?? null, $_GET['year'] ?? null));
     $toolsHoursInYear = json_encode($dbTools->getHoursInYear($_GET['year'] ?? null));
     $toolsHours = json_encode($dbTools->getTotalHours());
 

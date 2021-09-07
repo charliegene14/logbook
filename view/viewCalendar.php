@@ -58,14 +58,27 @@
                                                         echo 'Aucune partie de travail';
                                                     } ?>
                                                     <br />
-                                                    <img src="public/css/toolPost.png" />
-                                                    <?php if ($post['nameTool'] != null) {
-                                                        echo $post['nameTool'];
-                                                    } else {
-                                                        echo 'Aucun outil utilisé';
-                                                    } ?>
-                                                    <br />
-                                                    <img src="public/css/timePost.png" /> <b><?= $regex->time($post['timePost']) ?></b>
+
+                                                    <?php
+                                                        $tools = $dbPosts->getTools($post['idPost']);
+                                                        if ($tools != NULL) {
+
+                                                            foreach ($tools as $tool ) {
+                                        
+                                                                echo '<img src="public/css/toolPost.png" />&nbsp;';
+                                                                if ($tool['nameTool'] == NULL) {
+                                                                    echo 'Aucun outil';
+                                                                } else {
+                                                                    echo $tool['nameTool'];
+                                                                }
+                                                                echo '&nbsp;&nbsp; <img src="public/css/timePost.png" />&nbsp;'. $regex->time($tool['timeTool']);
+                                                                echo '<br />';
+                                                            }
+                                                            
+                                                        } else {
+                                                            echo '<img src="public/css/toolPost.png" />Aucun outil<br />';
+                                                        }
+                                                    ?>
                                                 </p>
                                             </div>
                                         <?php }
@@ -90,7 +103,7 @@
     <div class="cal_stats" id="stats">
         <div class="this_month">
             <div class="digits">
-                <h1 style="color: rgba(23, 23, 36, 0.8)">Ce mois</h1>
+                <h1 style="color: rgba(23, 23, 36, 0.8)">Ce mois-ci</h1>
                 <h2><?= $month->getMonth() . ' ' . $month->getYear() ?>: <?= $regex->time($totalHoursInMonth['totalStr']) ?></h2>
                 <h2>Moyenne: <?= $regex->time($totalAverageHoursInMonth) ?></h2>
             </div>

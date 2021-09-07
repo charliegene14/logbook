@@ -45,17 +45,21 @@ class dbTools extends database
 	{
 		$DB = $this->dbConnect();
 
-		$QUERY = $DB->prepare('SELECT p.Tool,
-									SUM(TIME_TO_SEC(p.timePost)) / 3600 as totalFloat, 
-									SEC_TO_TIME(SUM(TIME_TO_SEC(p.timePost))) as totalStr,
+		$QUERY = $DB->prepare('SELECT ttp.idTool,
+
+									SUM(TIME_TO_SEC(ttp.timeTool)) / 3600 as totalFloat, 
+									SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool))) as totalStr,
 									t.nameTool
+
 								FROM post p
+								LEFT JOIN tool_to_post ttp
+								ON p.idPost = ttp.idPost
 								LEFT JOIN tools t
-								ON p.Tool = t.idTool
+								ON ttp.idTool = t.idTool
 								WHERE p.datePost
 								BETWEEN ?
 								AND ?
-								GROUP BY p.Tool');
+								GROUP BY ttp.idTool');
 
 		if ($month == null || $year == null) {
 			$month = intval(date('m'));
@@ -86,17 +90,19 @@ class dbTools extends database
 	{
 		$DB = $this->dbConnect();
 
-		$QUERY = $DB->prepare('SELECT p.Tool,
-									SUM(TIME_TO_SEC(p.timePost)) / 3600 as totalFloat, 
-									SEC_TO_TIME(SUM(TIME_TO_SEC(p.timePost))) as totalStr,
+		$QUERY = $DB->prepare('SELECT ttp.idTool,
+									SUM(TIME_TO_SEC(ttp.timeTool)) / 3600 as totalFloat, 
+									SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool))) as totalStr,
 									t.nameTool
 								FROM post p
+								LEFT JOIN tool_to_post ttp
+								ON p.idPost = ttp.idPost
 								LEFT JOIN tools t
-								ON p.Tool = t.idTool
+								ON ttp.idTool = t.idTool
 								WHERE p.datePost
 								BETWEEN ?
 								AND ?
-								GROUP BY p.Tool');
+								GROUP BY ttp.idTool');
 
 		if ($year == null || $year < 1970 || $year > 2100) {
 			$year = intval(date('Y'));
@@ -123,14 +129,16 @@ class dbTools extends database
 	{
 		$DB = $this->dbConnect();
 
-		$QUERY = $DB->prepare('SELECT p.Tool,
-									SUM(TIME_TO_SEC(p.timePost)) / 3600 as totalFloat, 
-									SEC_TO_TIME(SUM(TIME_TO_SEC(p.timePost))) as totalStr,
+		$QUERY = $DB->prepare('SELECT ttp.idTool,
+									SUM(TIME_TO_SEC(ttp.timeTool)) / 3600 as totalFloat, 
+									SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool))) as totalStr,
 									t.nameTool
 								FROM post p
+								LEFT JOIN tool_to_post ttp
+								ON p.idPost = ttp.idPost
 								LEFT JOIN tools t
-								ON p.Tool = t.idTool
-								GROUP BY p.Tool');
+								ON ttp.idTool = t.idTool
+								GROUP BY ttp.idTool');
 
 		$QUERY->execute();
 		$array = $QUERY->fetchAll();
