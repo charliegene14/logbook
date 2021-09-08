@@ -2,6 +2,7 @@
 require_once 'model/dbCategories.php';
 require_once 'model/dbTools.php';
 require_once 'model/dbWorks.php';
+require_once 'model/uploads.php';
 
 function viewCats()
 {
@@ -18,8 +19,9 @@ function viewCats()
 	$listTools = $dbTools->getAll();
 	$listCats = $dbCats->getAll();
 	$listWorks = $dbWorks->getByType($_GET['works']);
-	
-///
+
+	$upload = new UploadsTools();
+
 	if (!empty($_GET['updateTools']) && isValidToken($_GET['token']))
 	{
 		if (!intval($_GET['updateTools']))
@@ -31,14 +33,25 @@ function viewCats()
 			header('Location: index.php?view=cats&works='.$_GET['works'].'');
 			$ID = $_GET['updateTools'];
 			$dbTools->updateName($ID, $_POST["name$ID"]);
+
+			if (isset($_FILES['iconTool'])) {
+				$upload->uploadIcon($ID);
+			}
+			
 			exit();
 		}
 	}
 	elseif (isset($_GET['insertTools']) && isValidToken($_GET['token']))
 	{
 		header('Location: index.php?view=cats&works='.$_GET['works'].'');
-		$ID = $_GET['insertTools'];
-		$dbTools->insert($_POST['nameTool']);
+		$ID = $dbTools->nextID();
+
+		$dbTools->insert($ID, $_POST['nameTool']);
+
+		if (isset($_FILES['iconTool'])) {
+			$upload->uploadIcon($ID);
+		}
+
 		exit();
 	}
 	elseif (!empty($_GET['delTools']) && isValidToken($_GET['token']))
@@ -56,7 +69,7 @@ function viewCats()
 		}
 	}
 
-///
+
 	if (!empty($_GET['updateCats']) && isValidToken($_GET['token']))
 	{
 		if (!intval($_GET['updateCats']))
@@ -125,7 +138,7 @@ function viewCats()
 		}
 	}
 
-///
+
 	
 	if (!empty($_GET['updateWorks']) && isValidToken($_GET['token']))
 	{
@@ -190,5 +203,6 @@ function viewCats()
 			exit();
 		}
 	}
+
 	require 'view/viewCats.php';
 }

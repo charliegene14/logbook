@@ -76,7 +76,6 @@ textarea
 
 .viewCats form
 {
-	color: white;
 	padding: 3px;
 	border-radius: 10px;
 }
@@ -96,6 +95,10 @@ textarea
 .viewCats .tools
 {
 	display: flex;
+}
+
+.viewCats .admin_tool_icon {
+	width: 128px;
 }
 
 /*---------Contenu de page: block/error---------*/

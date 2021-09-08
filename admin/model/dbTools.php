@@ -58,14 +58,14 @@ class dbTools extends database
 		}
 	}
 
-	public function insert($nameTool)
+	public function insert($idTool, $nameTool)
 	{
 		$DB = $this->dbConnect();
 
 		$QUERY = $DB->prepare('INSERT INTO tools (idTool, nameTool)
-								VALUES (NULL, ?) ');
+								VALUES (?, ?) ');
 
-		$QUERY->execute(array($nameTool));
+		$QUERY->execute(array($idTool, $nameTool));
 	}
 
 	public function delete($idTool)
@@ -85,5 +85,20 @@ class dbTools extends database
 		{
 			throw new Exception('Désolé, l\'outil n\'éxiste pas.');
 		}
+	}
+
+	public function getIcon($idTool) {
+		if (is_file('../public/img/tools/'.$idTool.'.png')):
+		?>
+			<img class="admin_tool_icon" src="../public/img/tools/<?=$idTool?>.png" />
+		<?php
+		endif;
+	}
+
+	public function nextID() {
+		$DB = $this->dbConnect();
+		$QUERY = $DB->query('SELECT MAX(idTool)+1 AS number FROM tools');
+
+		return $QUERY->fetch()['number'];
 	}
 }

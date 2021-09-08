@@ -80,3 +80,17 @@ class UploadsProject
 		move_uploaded_file($_FILES['zip']['tmp_name'], $targetFile);
 	}
 }
+
+class UploadsTools
+{
+	public function uploadIcon($idTool)
+	{
+		$targetDir = '../public/img/tools/';
+		$oldName = explode('.', $_FILES['iconTool']['name']);
+		$newName = $idTool.'.'.end($oldName);
+		
+		$targetFile = $targetDir . $newName;
+
+		move_uploaded_file($_FILES['iconTool']['tmp_name'], $targetFile);
+	}
+}

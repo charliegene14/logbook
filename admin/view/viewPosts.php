@@ -2,7 +2,8 @@
 <?php  ob_start();?>
 
 <section class="news">
-	<a href="index.php?view=postinsert">Ajouter un article</a>
+	<p><a href="index.php">Retourner à l'accueil</a></p>
+	<p><a href="index.php?view=postinsert">Ajouter un article</a></p>
 	<aside class="sort">
 		<form method="post" action="index.php?view=posts">
 			<fieldset>
