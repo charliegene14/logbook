@@ -1,9 +1,35 @@
-<?php 
+<?php require 'functions.php'; ?>
 
-session_start();
-require 'controller/global.php';
+<!DOCTYPE html>
+<html lang="fr" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>&mdash; <?= getHeadTitle(); ?></title>
+ 	<link rel="stylesheet" href="public/css/style.css" />
+</head>
 
-try {
+<body>
+
+	<img id="wave" class="anim-drop-up" src="/public/css/images/wave.svg" />
+	<?php getMenu(); ?>
+
+	<main id="main" role="main" ng-view>
+		
+	</main>
+	
+
+	<?php getScripts(); ?>
+
+</body>
+</html>
+
+<?php
+/*try {
+
+	require_once 'controller/global.php';
+
 	if (!isValidPass('Site')) {
 		viewBlock();
 	} else {
@@ -44,6 +70,7 @@ try {
 			viewAccueil();
 		}
 	}
+
 } catch (Exception $e) {
 	Error($e->getMessage());
-}
+}*/

@@ -1,5 +1,5 @@
+<?php require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/controller/viewVersions.php'; ?>
 <?php  $pageTitle = 'Versions - '.$PROJ['titleProject'].''; ?>
-<?php  ob_start(); ?>
 
 <section class="versions">
 
@@ -46,6 +46,3 @@
             </article>
         <?php } ?>
 </section>
-
-<?php  $pageContent = ob_get_clean(); ?>
-<?php  require('template.php'); ?>

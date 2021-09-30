@@ -1,10 +1,10 @@
 <?php
 
-require_once 'database.php';
-require 'dbPosts.php';
-require 'dbCategories.php';
-require 'dbWorks.php';
-require 'dbTools.php';
+require_once realpath($_SERVER['DOCUMENT_ROOT']).'/model/database.php';
+require_once realpath($_SERVER['DOCUMENT_ROOT']).'/model/dbPosts.php';
+require_once realpath($_SERVER['DOCUMENT_ROOT']).'/model/dbCategories.php';
+require_once realpath($_SERVER['DOCUMENT_ROOT']).'/model/dbWorks.php';
+require_once realpath($_SERVER['DOCUMENT_ROOT']).'/model/dbTools.php';
 
 class FilteredPosts extends database {
 

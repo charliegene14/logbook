@@ -1,0 +1,21 @@
+img#wave {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left bottom;
+
+    position: fixed;
+
+    z-index: $wave-index;
+
+    &.anim-drop-down {
+        animation: drop-down 1.5s cubic-bezier(0, 0, 0.3, 1);
+        top: 100%;
+    }
+
+    &.anim-drop-up {
+        animation: drop-up 1.5s cubic-bezier(0, 0, 0.3, 1);
+        top: 0;
+    }
+}

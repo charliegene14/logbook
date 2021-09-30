@@ -1,0 +1,108 @@
+section#viewBlock {
+    @include kf-fade-in-out();
+    width: 100%;
+    height: 100%;
+
+    h1#hello {
+
+        @include center(absolute);
+        font-size: $rem-64;
+        color: $black;
+        opacity: 0;
+        animation: fade-in-out 3s ease-in-out;
+    }
+
+    #pass_form {
+        @include center(absolute);
+        display: none;
+        width: 100vw;
+
+        #label-container {
+            overflow: hidden;
+        }
+
+        #label-container h2 {
+            position: relative;
+            text-align: center;
+            white-space: nowrap;
+            font-size: $rem-20;
+            color: $black;
+            top: 0;
+
+            &.appears {
+                animation: pass-label-up 2s ease;
+            }
+        }
+
+        #input-container {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            
+            input {
+                position: relative;
+                top: 0;
+                border: none;
+                height: $rem-24;
+                vertical-align: center;
+
+                &.appears {
+                    animation: pass-inputs-down 1s cubic-bezier(0, 0, 0.3, 1);
+                }
+            }
+
+            #password {
+                border: $rem-1 solid $black;
+                border-radius: $rem-2;
+                margin-right: $rem-16;
+            }
+
+            #pass_submit {
+                width: $rem-24;
+                height: $rem-24;
+                
+                background-color: transparent;
+                background-image: url('/public/css/images/next.svg');
+                cursor: pointer;
+            }
+
+            &.refused {
+                #password, #pass_submit {
+                    position: relative;
+                    animation: refused 400ms ease;
+                }
+                #password {
+                    border: $rem-4 solid $red;
+                }
+            }
+
+            &.access {
+                #password {
+                    border: $rem-4 solid $green;
+                }
+
+                #pass_submit {
+                    animation: spinne 500ms ease-in;
+                }
+            }
+        }
+
+        &.active {
+            display: block;
+        }
+
+        &.access {
+
+            #label-container h2 {
+                animation: pass-label-down 1s cubic-bezier(0, 0, 0.3, 1);
+                top: $rem-24;
+            }
+
+            #input-container #password, #input-container #pass_submit {
+                animation: pass-input-up 1s cubic-bezier(0, 0, 0.3, 1);
+                top: -$rem-24;
+            }
+        }
+    }
+}

@@ -1,5 +1,4 @@
-<?php  $pageTitle = 'Articles'; ?>
-<?php  ob_start();?>
+<?php require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/controller/viewPosts.php'; ?>
 
 <section class="news">
 
@@ -68,7 +67,7 @@
 	<?php foreach ($posts as $POST) : ?>
 		<article>
 
-			<h1 class="titlePost"><a href="index.php?view=fullpost&amp;id=<?=$POST['idPost']?>"><?=$POST['titlePost']?></a></h1>
+			<h1 class="titlePost"><a href="/#!/posts/<?=$POST['idPost']?>"><?=$POST['titlePost']?></a></h1>
 
 			<aside class="infoPost">
 				(dans <a style="color: <?=$POST['colorCat']?>" href="index.php?view=posts&amp;type=<?=$POST['Type']?>"><b><?=$POST['nameCat']?></b></a>)<br />
@@ -111,6 +110,3 @@
 		?>
 	</p>
 </section>
-
-<?php  $pageContent = ob_get_clean(); ?>
-<?php  require('template.php'); ?>

@@ -1,5 +1,4 @@
-<?php  $pageTitle = $PROJ['titleProject']; ?>
-<?php  ob_start(); ?>
+<?php require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/controller/viewFullproject.php'; ?>
 
 <section class="fullproject">
 	<div class="header">
@@ -229,6 +228,3 @@
 	chartParts.update();
 	chartTools.update();
 </script>
-
-<?php  $pageContent = ob_get_clean(); ?>
-<?php  require('template.php'); ?>

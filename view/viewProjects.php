@@ -1,11 +1,8 @@
-<?php  $pageTitle = 'Projets'; ?>
-<?php  ob_start(); ?>
+<?php require_once realpath($_SERVER['DOCUMENT_ROOT']). '/controller/viewProjects.php';?>
 
 <section class="projects">
 
 	<div class="slideshow">
-
-		<button class="button-left" onclick="changeSlide(-1)"></button>
 
 				<?php while ($PROJ = $list->fetch()) : ?>
 
@@ -25,9 +22,9 @@
 									<?php
 										if ($lastVersion = $dbProj->getLastVersion($PROJ['idProject']))
 										{
-											echo '<a href="index.php?view=versions&id='.$PROJ['idProject'].'#'.$lastVersion['theVersion'].'">'.$lastVersion['theVersion'].'</a> - ';
+											echo '<a href="/#!/versions/'.$PROJ['idProject'].'#'.$lastVersion['theVersion'].'">'.$lastVersion['theVersion'].'</a> - ';
 											echo '<span class="liltxt">';
-											echo $regex->date($lastVersion['dateVersion']).' (<a href="index.php?view=versions&id='.$PROJ['idProject'].'">historique</a>)</span>';
+											echo $regex->date($lastVersion['dateVersion']).' (<a href="/#!/versions/'.$PROJ['idProject'].'">historique</a>)</span>';
 										}
 										else
 										{
@@ -60,7 +57,7 @@
 									
 									<?= $PROJ['previewProject']?>
 								</p>
-								<button class="button-read" onClick="location.href='index.php?view=fullproject&id=<?=$PROJ['idProject']?>'">En savoir plus</button>
+								<button class="button-read" onClick="location.href='/#!/projects/<?=$PROJ['idProject']?>'">En savoir plus</button>
 							</div>
 						</div>
 					</article>
@@ -72,13 +69,6 @@
 						<i>Pas d'autres projets pour le moment</i> <img src="public/css/smileys/smile.png" />
 					</p>
 				</article>
-
-		<button class="button-right" onclick="changeSlide(+1)"></button>
-
 	</div>
 
 </section>
-
-<script src="public/js/viewProjects.js"></script>
-<?php  $pageContent = ob_get_clean(); ?>
-<?php  require('template.php'); ?>

@@ -1,9 +1,11 @@
-<?php 
-require_once 'model/dbProjects.php';
-require_once 'model/regex.php';
+<?php
 
-function viewFullproject()
-{
+try {
+
+	require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/model/passChecking.php'; passCheck();
+	require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/dbProjects.php';
+	require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/regex.php';
+
 	if (empty($_GET['id']) or !intval($_GET['id'])) {
 
 		throw new Exception('Désolé, aucun projet ici.');
@@ -23,6 +25,9 @@ function viewFullproject()
 		$jsArrWorkParts = json_encode($workParts);
 		$jsArrTools = json_encode($tools);
 
-		require 'view/viewFullproject.php';
 	}
+	
+} catch(Exception $e) {
+
+	require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/view/exception.php';
 }

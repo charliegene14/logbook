@@ -1,9 +1,10 @@
-<?php 
-require_once 'model/regex.php';
-require 	 'model/FilteredPosts.php';
+<?php
 
-function viewPosts()
-{
+try {
+	require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/model/passChecking.php'; passCheck();
+	require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/regex.php';
+	require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/FilteredPosts.php';
+	
 	$MAX_LENGTH = 400;
 	$regex = new Regex();
 
@@ -59,5 +60,7 @@ function viewPosts()
 	$queryWorks = $filteredPosts->queryWorks;
 	$queryTools = $filteredPosts->queryTools;
 
-	require 'view/viewPosts.php';
+} catch(Exception $e) {
+
+	require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/view/exception.php';
 }

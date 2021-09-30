@@ -1,0 +1,17 @@
+main {
+
+    z-index: $main-index;
+
+    position: relative;
+    top: $rem-64;
+
+    height: calc(100vh - #{$rem-64});
+    overflow-x: hidden;
+
+    @media only screen and (min-width: 660px) {
+        height: 100vh;
+        width: calc(100vw - #{$rem-64});
+        top: 0;
+        left: $rem-64;
+    }
+}

@@ -1,11 +1,10 @@
-<?php  ob_start(); ?>
+<?php require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/controller/viewFullPost.php'; ?>
 
 <section class="news">
 	<article>
 
 		<?php  
 		$POST = $FULLPOST->fetch();
-		$pageTitle = $POST['titlePost'];
 		?>
 		
 		<div class="headerPost">
@@ -46,6 +45,3 @@
 			</div>
 	</article>
 </section>
-
-<?php  $pageContent = ob_get_clean(); ?>
-<?php  require('template.php'); ?>

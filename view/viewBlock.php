@@ -1,22 +1,19 @@
-<?php  $pageTitle = 'Connexion'; ?>
-<?php  ob_start(); ?>
+<section id="viewBlock">
 
-<div class="block">
+		<h1 id="hello">Bonjour.</h1>
+		<form id="pass_form">
 
-	<form method="post">
+			<div id="label-container">
+				<h2><label for="password">Veuillez saisir le mot de passe.</label></h2>
+			</div>
 
-		<?php if(!empty($_SESSION['Site']) & !isValidPass('Site')): ?>
+			<div id="input-container">
+				<input type="password" name="password" id="password" autofocus required />
+				<input id="pass_submit" type="submit" value="" />
+			</div>
 
-			<p style="color: red">Oops, mauvais mot de passe...</p>
-			<?php $_SESSION['Site'] = null; ?>
-			
-		<?php endif; ?>
+		</form>
 
-		<input type="password" name="password" id="password" placeholder="Mot de passe d'accès au site." autofocus required /><br />
-		<input type="submit" value="Valider" />
-	</form>
+</section>
 
-</div>
-
-<?php  $pageContent = ob_get_clean(); ?>
-<?php  require 'template.php'; ?>
+<script type="text/javascript" src="/public/js/viewBlock.js"></script>

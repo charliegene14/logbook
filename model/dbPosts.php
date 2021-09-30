@@ -1,6 +1,6 @@
 <?php 
 
-require_once 'model/database.php';
+require_once realpath($_SERVER['DOCUMENT_ROOT']).'/model/database.php';
 
 class dbPosts extends database
 {

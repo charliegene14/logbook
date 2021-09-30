@@ -1,9 +1,11 @@
 <?php 
-require_once 'model/dbPosts.php';
-require_once 'model/regex.php';
 
-function viewFullPost()
-{
+try {
+
+	require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/model/passChecking.php'; passCheck();
+	require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/dbPosts.php';
+	require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/regex.php';
+
 	$regex = new Regex();
 	$dbPosts = new dbPosts();
 
@@ -12,11 +14,14 @@ function viewFullPost()
 		$FULLPOST = $dbPosts->getPost($_GET['id']);
 		$toolsInPost = $dbPosts->getTools($_GET['id']);
 		
-		require('view/viewFullPost.php');
 	}
 		
 	else
 	{	
 		throw new Exception('Désolé, une erreur est survenue.');
 	}
+
+} catch(Exception $e) {
+
+	require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/view/exception.php';
 }

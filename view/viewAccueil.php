@@ -1,13 +1,10 @@
-<?php  $pageTitle = 'Accueil'; ?>
 
-<?php  ob_start(); ?>
+<?php require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/controller/viewAccueil.php'; ?>
 
-<section class="index">
-	<article>
+<section id="viewAccueil">
+	<h1 class="title-section">Bienvenue.</h1>
+	<article class="content-section">
 		<?= $contentHome ?>
 	</article>
 </section>
 
-<?php  $pageContent = ob_get_clean(); ?>
-
-<?php  require 'template.php'; ?>

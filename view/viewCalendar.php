@@ -1,5 +1,4 @@
-<?php  $pageTitle = 'Calendrier & Stats'; ?>
-<?php  ob_start(); ?>
+<?php require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/controller/viewCalendar.php'; ?>
 
 <section class="calendar">
     <div class="fullcal">
@@ -675,6 +674,3 @@
     yearRadar.update();
 
 </script>
-
-<?php $pageContent = ob_get_clean(); ?>
-<?php require 'template.php'; ?>

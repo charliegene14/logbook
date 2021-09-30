@@ -1,12 +1,13 @@
-<?php 
-require_once 'model/calendar.php';
-require_once 'model/dbPosts.php';
-require_once 'model/dbCategories.php';
-require_once 'model/dbTools.php';
-require_once 'model/regex.php';
+<?php
 
-function viewCalendar()
-{
+try {
+    require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/model/passChecking.php'; passCheck();
+    require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/calendar.php';
+    require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/dbPosts.php';
+    require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/dbCategories.php';
+    require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/dbTools.php';
+    require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/regex.php';
+
     if (isset($_GET['month']) && !intval($_GET['month']) || isset($_GET['year']) && !intval($_GET['year'])) {
         throw new Exception('Oops, une erreur est survenue.');
     } else {
@@ -76,5 +77,7 @@ function viewCalendar()
     $jsToolsInAllMonths  = json_encode($toolsHoursInAllMonths);
     $jsTotalInAllMonths  = json_encode($totalHoursInAllMonths);
 
-    require 'view/viewCalendar.php';
+} catch(Exception $e) {
+
+	require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/view/exception.php';
 }
