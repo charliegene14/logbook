@@ -1,5 +1,4 @@
 <?php
-
 define('__ROOT__', dirname(__FILE__));
 
 /**
@@ -30,6 +29,21 @@ function getMenu() {
 }
 
 /**
+ * Get all styles files
+ */
+function getStyles() {
+    ?>
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+    <link rel="stylesheet" href="public/css/style.css" />
+
+  <?php
+}
+
+/**
  * Get all scripts files.
  */
 function getScripts() {
@@ -43,25 +57,28 @@ function getScripts() {
 	</script>
 
     <!--    Angular JS  -->
-	<script type="text/javascript"
-            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js">
-    </script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
     <!--    Angular JS Route module -->
-	<script type="text/javascript"
-            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js">
-    </script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
 
     <!--    Logbook menu    -->
-    <script type="text/javascript"
-            src="/public/js/menu.js">
-    </script>
+    <script src="/public/js/menu.js"></script>
+
+    <!-- Some global functions -->
+    <script src="/public/js/functions.js"></script>
+
+    <!--    Swiper JS   -->
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+
+    <!--    Chart JS    -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@next"></script>
 
     <?php
-
-    /**
-     * Angular JS Config File
-     * Contains routes
-     */
-    require_once __ROOT__.'/public/js/app.js.php';
+        /**
+		  * Angular JS Config File
+		  * Contains routes
+		  */
+        require __ROOT__.'/public/js/app.js.php';
 }

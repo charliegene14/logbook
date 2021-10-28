@@ -43,7 +43,6 @@ $(document).ready(function() {
             async: true,
             type: 'post',
             url: '/passSession.php',
-            cache: false,
             data: {password: password},
 
             success: function(response) {

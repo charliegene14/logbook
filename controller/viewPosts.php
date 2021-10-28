@@ -48,9 +48,13 @@ try {
 
 	$filteredPosts = new FilteredPosts($type, $work, $tool);
 
-	if ($_GET['pg'] > $filteredPosts->getNumberPages()) {
-		$_GET['pg'] = $filteredPosts->getNumberPages();
-	} elseif ($_GET['pg'] < 0 || !intval($_GET['pg'])) {
+	if (isset($_GET['pg'])) {
+		if ($_GET['pg'] > $filteredPosts->getNumberPages()) {
+			$_GET['pg'] = $filteredPosts->getNumberPages();
+		} elseif ($_GET['pg'] < 0 || !intval($_GET['pg'])) {
+			$_GET['pg'] = 1;
+		}
+	} else {
 		$_GET['pg'] = 1;
 	}
 

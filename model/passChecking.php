@@ -7,10 +7,13 @@ function isValidPass($namePass)
 	$dbPassword = new dbPassword();
 	$hashedPass =  $dbPassword->getPass($namePass);
 
-	if (empty($_SESSION[$namePass]) OR !password_verify($_SESSION[$namePass], $hashedPass))
-	{
+	if (empty($_SESSION[$namePass])
+		OR !isset($_SESSION[$namePass])
+		OR !password_verify($_SESSION[$namePass], $hashedPass)) {
+
 		return false;
 	}
+
 	return true;
 }
 

@@ -1,7 +1,7 @@
 <?php
 
 if (isset($_GET['e']) && $_GET['e'] == 404) {
-    $message = 'Oops... La page demandée n\'existe pas...';
+    $content = '<h1>404</h1><p>Oops, la page demandée n\'existe pas.</p>';
 } else {
-    $message = $e->getMessage();
+    $content = '<h1>Erreur</h1><p>'.$e->getMessage().'</p>';
 }

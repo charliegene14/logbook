@@ -152,4 +152,17 @@ class dbTools extends database
 		}
 		return $newArray;
 	}
+
+	public function getHoursInTool(int $idTool): string {
+		$db = $this->dbConnect();
+
+		$query = $db->prepare('SELECT ttp.idTool,
+									SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool))) as total
+								FROM tool_to_post ttp
+								WHERE ttp.idTool = :id');
+
+		$query->bindParam(':id', $idTool, PDO::PARAM_INT);
+		$query->execute();
+		return $query->fetch()['total'];
+	}
 }

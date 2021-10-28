@@ -1,48 +1,47 @@
 <?php require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/controller/viewVersions.php'; ?>
-<?php  $pageTitle = 'Versions - '.$PROJ['titleProject'].''; ?>
 
-<section class="versions">
+<section id="versions">
 
-    <div class="header">
-		<div class="icon">
-			<img src="public/img/projects/<?=$PROJ['idProject']?>.png" alt="<?=$PROJ['titleProject']?>" />
-		</div>
-
-		<div class="info">
-            <h2 style="color: <?=$PROJ['colorCat']?>"><b><?=$PROJ['titleProject']?></b></h2>
-            <h3>Historique des versions</h3>
-        </div>
+    <div class="title-section">
+		<img src="public/img/projects/<?=$PROJ['idProject']?>.png" alt="<?=$PROJ['titleProject']?>" />
+        <h1 style="color: <?=$PROJ['colorCat']?>"><?=$PROJ['titleProject']?>.</h1>
     </div>
 
-    <div class="articles">
-        <?php while ($VERSION = $listVersions->fetch()) { ?>
+    <div id="list-versions" class="content-section">
+        <h2>Historique des versions.</h2>
+        <?php while ($VERSION = $listVersions->fetch()): ?>
             <article class="version" id="<?=$VERSION['theVersion']?>">
 
                 <div class="line">
 
-                    <div class="theVersion">
+                    <div class="cel theVersion">
                         <p><?=$VERSION['theVersion']?></p>
                     </div>
 
-                    <div class="download">
-                        <p><a href="public/files/<?=$PROJ['titleProject']?>/versions/<?=$VERSION['theVersion']?>.zip">
-                            Télécharger .zip
+                    <div class="cel download">
+                        <p><a class="button" href="public/files/<?=$PROJ['titleProject']?>/versions/<?=$VERSION['theVersion']?>.zip">
+                            Télécharger.
                         </a></p>
                     </div>
 
-                    <div class="date">
+                    <div class="cel date">
                         <p><?= $regex->date($VERSION['dateVersion'])?></p>
                     </div>
 
-                    <div class="targetChangelog">
-                        <p><a href="#<?=$VERSION['theVersion']?>">Voir le changelog</a></p>
+                    <div class="cel targetChangelog">
+                        <p class="button">Changelog.</p>
                     </div>
                 </div>
 
                 <div class="changelog">
-                    <p><?=$VERSION['changeLog']?></p>
+                    <div class="changelog-content"><?=$VERSION['changeLog']?></p>
                 </div>
 
             </article>
-        <?php } ?>
+        <?php endwhile; ?>
 </section>
+
+<script>
+    document.title = 'Versions: <?= $PROJ['titleProject']?>.';
+</script>
+<script type="text/javascript" src="/public/js/viewVersions.js"></script>

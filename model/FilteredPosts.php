@@ -224,17 +224,58 @@ class FilteredPosts extends database {
      * Return html pagination template.
      */
     public function getPagination(?int $page = 1) {
-        for($i=1; $i <= $this->numberPages; $i++)
-		{
-			if ($i == $page) {
-			    echo ' <strong> '.$i.' </strong> ';
-			} else {
-				echo ' <a href="index.php?view=posts';
-				echo !empty($_GET['type']) || !empty($_POST['type']) ? '&amp;type='.$_POST['type'] : false;
-                echo !empty($_GET['work']) || !empty($_POST['work']) ? '&amp;type='.$_POST['work'] : false;
-                echo !empty($_GET['tool']) || !empty($_POST['tool']) ? '&amp;type='.$_POST['tool'] : false;
-				echo '&amp;pg='.$i.'"> '.$i.' </a>';
-			}
-		}
+        
+        $start = 1;
+        $pagesPerView = 7;
+        
+        function urlFilters() {
+            echo !empty($_GET['type']) || !empty($_POST['type']) ? 'type='.$_POST['type'].'&amp;' : false;
+            echo !empty($_GET['work']) || !empty($_POST['work']) ? 'work='.$_POST['work'].'&amp;' : false;
+            echo !empty($_GET['tool']) || !empty($_POST['tool']) ? 'tool='.$_POST['tool'].'&amp;' : false;
+        }
+
+        if ($page <= 3 || $this->getNumberPages() < $pagesPerView ) { $start = 1; }
+        elseif ($page >= $this->getNumberPages() - 3) { $start = $this->getNumberPages() - 6; }
+        else { $start = $page - 3; }
+
+        if ($page > 1) {
+            echo '<a class="previous-button" href="/#!/posts?';
+            echo urlFilters();
+            echo 'pg=' .($page-1). '"></a>';
+        }
+        
+        echo '<p>';
+
+        if ($this->getNumberPages() > $pagesPerView && $page > 4) {
+            echo '<a class="page start" href="/#!/posts?';
+            echo urlFilters();
+            echo 'pg=1">...</a>';
+        }
+
+        for ($i=$start; $i <= $start + 6; $i++)
+        {
+            if ($i <= 0 || $i > $this->getNumberPages()) { echo false; }
+            elseif ($i == $page) {
+                echo '<span class="page current">'.$i.'</span>';
+            } else {
+                echo '<a class="page" href="/#!/posts?';
+                echo urlFilters();
+                echo 'pg='.$i.'"> '.$i.' </a>';
+            }
+        }
+
+        if ($this->getNumberPages() > $pagesPerView && $page <= $this->getNumberPages() - 4) {
+            echo '<a class="page end" href="/#!/posts?';
+            echo urlFilters();
+            echo 'pg=' . $this->getNumberPages() . '">...</a>';
+        }
+        
+        echo '</p>';
+
+        if ($page < $this->getNumberPages()) {
+            echo '<a class="next-button" href="/#!/posts?';
+            echo urlFilters();
+            echo 'pg=' .($page+1). '"></a>';
+        }
     }
 }

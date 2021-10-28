@@ -4,18 +4,26 @@ section:not(#viewBlock) {
     padding-left: $rem-16;
 
     @media only screen and (min-width: 660px) {
-        padding: $rem-64;
+        padding-right: $rem-64;
+        padding-left: $rem-64;
+        padding-top: $rem-32;
+        padding-bottom: $rem-32;
     }
 
-    h1.title-section, article.content-section {
+    @media only screen and (min-width: 870px) {
+        padding-right: $rem-96;
+        padding-left: $rem-96;
+    }
+
+    .title-section, .content-section {
         position: relative;
     } 
 
-    h1.title-section {
-        animation: section-right-appears 700ms cubic-bezier(0, 0, 0.3, 1);
+    .title-section {
+        animation: section-right-appears 1s cubic-bezier(0, 0, 0.3, 1);
     }
 
-    article.content-section {
-        animation: section-right-appears 1400ms cubic-bezier(0, 0, 0.3, 1);
+    .content-section {
+        animation: section-right-appears 2s cubic-bezier(0, 0, 0.3, 1);
     }
 }

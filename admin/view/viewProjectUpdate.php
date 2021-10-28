@@ -21,11 +21,11 @@
                     <legend>Une catégorie peut être associée (facultatif)</legend>
                     <select name="typeCat">
                         <option value="NULL">Aucune catégorie</option>
-                        <?while ($CAT = $listCats->fetch()) {?>
-                            <option value="<?=$CAT['Type']?>" <?if ($CAT['Type'] == $PROJ['typeCat']){echo'selected';}?>>
+                        <?php while ($CAT = $listCats->fetch()): ?>
+                            <option value="<?=$CAT['Type']?>" <?php if ($CAT['Type'] == $PROJ['typeCat']){echo'selected';}?>>
                                 <?=$CAT['nameCat']?>
                             </option>
-                        <?}?>
+                        <?php endwhile; ?>
                     </select>
                 </fieldset>
 

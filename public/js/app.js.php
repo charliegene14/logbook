@@ -1,7 +1,7 @@
-<?php require_once __ROOT__.'/model/passChecking.php';?>
+<?php require __ROOT__.'/model/passChecking.php'; ?>
 
-<!--Angular JS Config Script-->
-<script>
+<!--    Angular JS Config Script    -->
+<script type="text/javascript">
 
 //Get the boolean PHP password checking
 var isValidPass = <?php echo json_encode(isValidPass('Site')); ?>;
@@ -26,6 +26,7 @@ app.config(function($routeProvider){
     // Home Page
     .when('/', {
         templateUrl: locked('view/viewAccueil.php'),
+        controller: 'HomeController'
     })
 
     // Login Page
@@ -42,7 +43,8 @@ app.config(function($routeProvider){
 
     // Portfolio / Projects Page
     .when('/projects', {
-        templateUrl: locked('view/viewProjects.php')
+        templateUrl: locked('view/viewProjects.php'),
+        controller: 'ProjectsController',
     })
 
     // Full project Page
@@ -52,22 +54,85 @@ app.config(function($routeProvider){
         },
     })
 
-    // Posts List Page
-    .when('/posts', {
-        templateUrl: locked('view/viewPosts.php')
+    //Project Versions page
+    .when('/versions/:id', {
+        templateUrl: function (params) {
+            return locked('view/viewVersions.php?id='+params.id);
+        },
+        controller: 'VersionsController',
     })
 
-    // Full post Page
+    // Posts List Page
+    .when('/posts', {
+        templateUrl: function (params) {
+            var url = 'view/viewPosts.php';
+            var symbol = '?';
+
+            if (params.type) {
+                url += symbol +'type='+params.type;
+                symbol = '&';
+            }
+
+            if (params.work) {
+                url += symbol +'work='+params.work;
+                symbol = '&';
+            }
+
+            if (params.tool) {
+                url += symbol +'tool='+params.tool;
+                symbol = '&';
+            }
+
+            if (params.pg) {
+                url += symbol +'pg='+params.pg;
+                symbol = '&';
+            }
+
+            return locked(url);
+        },
+    })
+
+    // Full post page
     .when('/posts/:id', {
         templateUrl: function (params) {
             return locked('view/viewFullPost.php?id='+params.id);
         },
     })
 
+    //Calendar and Stats page
+    .when('/stats', {
+        templateUrl: function(params) {
+            var url = 'view/viewCalendar.php';
+            var symbol = '?';
+
+            if (params.month) {
+                url += symbol +'month='+params.month;
+                symbol = '&';
+            }
+
+            if (params.year) {
+                url += symbol +'year='+params.year;
+                symbol = '&';
+            }
+            
+            return locked(url)
+        },
+    })
+
+    // 404 page
     .when('/404', {
         templateUrl: 'view/exception.php?e=404'
     })
 
     .otherwise('/404');
 });
+
+app.controller('ProjectsController', function() {
+    <?php require 'public/js/viewProjects.js'; ?>
+});
+
+app.controller('HomeController', function() {
+    <?php require 'public/js/viewAccueil.js'; ?>
+});
+    
 </script>

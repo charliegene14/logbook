@@ -1,11 +1,12 @@
 <?php
 try {
-
     require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/model/passChecking.php'; passCheck();
-    require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/model/dbInfos.php';
+    require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/model/dbTools.php';
+    require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/model/regex.php';
 
-    $infoHome = new dbInfo();
-    $contentHome = $infoHome->getContent('Accueil');
+    $regex = new Regex();
+    $dbTools = new dbTools();
+    $tools = $dbTools->getAll()->fetchAll();
 
 } catch(Exception $e) {
 

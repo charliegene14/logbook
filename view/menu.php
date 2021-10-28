@@ -16,7 +16,7 @@
                 <ul>
 
                 <?php while($MENU_CAT = $categories->fetch()): ?>
-                    <li><a href="index.php?view=posts&amp;type=<?=$MENU_CAT['Type']?>"><?=$MENU_CAT['nameCat']?></a></li>
+                    <li><a href="/#!/posts?type=<?=$MENU_CAT['Type']?>"><?=$MENU_CAT['nameCat']?></a></li>
                 <?php endwhile; ?>
 
                 </ul>
@@ -27,7 +27,7 @@
                 <ul>
 
                 <?php while($MENU_PROJ = $projects->fetch()): ?>
-                    <li><a href="index.php?view=fullproject&amp;id=<?=$MENU_PROJ['idProject']?>"><?=$MENU_PROJ['titleProject']?></a></li>
+                    <li><a href="/#!/projects/<?=$MENU_PROJ['idProject']?>"><?=$MENU_PROJ['titleProject']?></a></li>
                 <?php endwhile; ?>
 
                 </ul>

@@ -88,9 +88,9 @@ class dbTools extends database
 	}
 
 	public function getIcon($idTool) {
-		if (is_file('../public/img/tools/'.$idTool.'.png')):
+		if (is_file('../public/img/tools/'.$idTool.'.svg')):
 		?>
-			<img class="admin_tool_icon" src="../public/img/tools/<?=$idTool?>.png" />
+			<img width='64px' height='64px' class="admin_tool_icon" src="../public/img/tools/<?=$idTool?>.svg" />
 		<?php
 		endif;
 	}

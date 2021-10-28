@@ -1,20 +1,22 @@
-<?php require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/controller/viewPosts.php'; ?>
+<?php require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/controller/viewPosts.php';?>
 
-<section class="news">
+<section id="posts">
 
-	<aside class="sort">
-		<form method="post" action="index.php?view=posts">
-			<fieldset>
+	<div class="title-section">
+		<h1>Articles.</h1>
 
-				<select name="type" onChange="this.form.submit()">
+		<aside class="sort">
+			<form id="posts-sorting">
+
+				<select onchange="posts_submit()" name="type" id="type">
 					<option value="">Toute catégorie</option>
 
 					<?php
 					if ($queryTypes != null) {
-					while ($CAT = $queryTypes->fetch()) {
+						while ($CAT = $queryTypes->fetch()) {
 							echo '<option value='.$CAT['Type'];
 
-							if (!empty($_POST['type']) && $_POST['type'] == $CAT['Type'] OR !empty($_GET['type']) && $_GET['type'] == $CAT['Type']) {
+							if ($type == $CAT['Type']) {
 								echo ' selected';
 							}
 
@@ -24,7 +26,7 @@
 					?>
 				</select>
 
-				<select name="work" onChange="this.form.submit()">
+				<select onchange="posts_submit()" name="work" id="work">
 					<option value="">Toute partie de travail</option>
 
 					<?php
@@ -32,7 +34,7 @@
 						while ($WORK = $queryWorks->fetch()) {
 							echo '<option value='.$WORK['idWork'].'';
 
-							if (!empty($_POST['work']) && $_POST['work'] == $WORK['idWork']){
+							if ($work == $WORK['idWork']){
 								echo ' selected';
 							}
 							echo '>'.$WORK['nameWork'].'</option>';
@@ -41,72 +43,69 @@
 					?>
 				</select>
 
-				<select name="tool" onChange="this.form.submit()">
+				<select onchange="posts_submit()" name="tool" id="tool">
 					<option value="">Tous les outils</option>
 
 					<?php
 					if ($queryTools != null) {
 						while ($TOOL = $queryTools->fetch()) {
-
 							echo '<option value='.$TOOL['idTool'];
 
-							if (!empty($_POST['tool']) AND $_POST['tool'] == $TOOL['idTool']) {
+							if ($tool == $TOOL['idTool']) {
 								echo ' selected';
 							}
-
 							echo '>'.$TOOL['nameTool'].'</option>';
 						}
 					}
 					?>
 				</select>
+			</form>
+		</aside>
 
-			</fieldset>
-		</form>
-	</aside>
+	</div>
+	
 
-	<?php foreach ($posts as $POST) : ?>
-		<article>
+	<div class="content-section">
+		<?php foreach ($posts as $POST) : ?>
+			<article id="<?=$POST['idPost']?>">
+				<div class="blur-bg"></div>
+				<h2 class="titlePost"><a href="/#!/posts/<?=$POST['idPost']?>"><?=$POST['titlePost']?></a></h2>
 
-			<h1 class="titlePost"><a href="/#!/posts/<?=$POST['idPost']?>"><?=$POST['titlePost']?></a></h1>
+				<aside class="infoPost">
+					<p>
+						Dans <a style="color: <?=$POST['colorCat']?>" href="/#!/posts?type=<?=$POST['Type']?>"><b><?=$POST['nameCat']?></b></a>
+					</p>
+						
+					<div class="svg-calendar"></div>
 
-			<aside class="infoPost">
-				(dans <a style="color: <?=$POST['colorCat']?>" href="index.php?view=posts&amp;type=<?=$POST['Type']?>"><b><?=$POST['nameCat']?></b></a>)<br />
-				<img src="public/css/datePost.png" />le <?=$regex->date($POST['datePost'])?>
-			</aside>
+					<p>
+						<?=$regex->date($POST['datePost'])?>
+					</p>
+				</aside>
 
-			<div class="previewPost">
-				<p>
-				<?php
-				if (strlen($regex->previewPost($POST['contentPost'])) > $MAX_LENGTH) {
-					echo substr($regex->previewPost($POST['contentPost']), 0, $MAX_LENGTH)?>
-					[...].
-					<br />
-					<br />
+				<div class="previewPost">
+					<p>
+						<?php if (strlen($regex->previewPost($POST['contentPost'])) > $MAX_LENGTH): ?>
+							<?php echo substr($regex->previewPost($POST['contentPost']), 0, $MAX_LENGTH); ?>
+							[...].
+					</p>
+							<a class="button" href="/#!/posts/<?= $POST['idPost']; ?>">Lire la suite</a>
+						<?php else: ?>
+							<?php echo ($regex->previewPost($POST['contentPost'])); ?>
+					</p>
+							<a class="button" href="/#!/posts/<?= $POST['idPost']; ?>">Voir l'article</a>
+						<?php endif;?>
+				</div>
+			</article>
+		<?php endforeach; ?>
 
-					<button class="button-read" onClick="window.location.href='index.php?view=fullpost&amp;id=<?=$POST['idPost']?>'">
-						Lire la suite
-					</button>
-
-				<?php
-				} else {
-					echo ($regex->previewPost($POST['contentPost'])) ?>
-					<br />
-					<br />
-					<button class="button-read" onClick="window.location.href='index.php?view=fullpost&amp;id=<?=$POST['idPost']?>'">
-						Lire la suite
-					</button>
-				
-				<?php }?>
-				</p>
-				
-			</div>
-			<hr />
-		</article>
-	<?php endforeach; ?>
-
-	<p class="pages">
-		<?php 
-		$filteredPosts->getPagination($_GET['pg']);
-		?>
-	</p>
+		<div class="pagination">
+			<?php $filteredPosts->getPagination($_GET['pg']); ?>
+		</div>
+	</div>
 </section>
+
+<script type='text/javascript'>
+	document.title = 'Articles.'
+</script>
+<script type="text/javascript" src="/public/js/viewPosts.js"></script>

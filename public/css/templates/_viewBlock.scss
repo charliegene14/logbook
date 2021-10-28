@@ -43,7 +43,6 @@ section#viewBlock {
             input {
                 position: relative;
                 top: 0;
-                border: none;
                 height: $rem-24;
                 vertical-align: center;
 
@@ -53,8 +52,6 @@ section#viewBlock {
             }
 
             #password {
-                border: $rem-1 solid $black;
-                border-radius: $rem-2;
                 margin-right: $rem-16;
             }
 

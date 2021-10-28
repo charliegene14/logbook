@@ -1,47 +1,69 @@
 <?php require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/controller/viewFullPost.php'; ?>
 
-<section class="news">
+<section id="fullpost">
 	<article>
 
-		<?php  
-		$POST = $FULLPOST->fetch();
-		?>
-		
-		<div class="headerPost">
-			<h1 class="titlePost"><a href="index.php?view=fullpost&amp;id=<?=$POST['idPost']?>"><?=$POST['titlePost']?></a></h1>
+		<h1 class="titlePost title-section"><?=$POST['titlePost']?></h1>
 
-			<?php if ($POST['Work'] != NULL) {
-					echo '<img src="public/css/workPost.png" />&nbsp;'.$POST['nameWork'].'<br /><br />';
-				} else {
-					echo '<img src="public/css/workPost.png" />&nbsp;Dans aucune partie de travail<br /><br />';
-				}
-				if ($toolsInPost != NULL) {
-
-					foreach ($toolsInPost as $tool ) {
-
-						echo '<img src="public/css/toolPost.png" />&nbsp;';
-						if ($tool['nameTool'] == NULL) {
-							echo 'Aucun outil';
-						} else {
-							echo $tool['nameTool'];
-						}
-						echo '&nbsp;&nbsp; <img src="public/css/timePost.png" />&nbsp;'. $regex->time($tool['timeTool']);
-						echo '<br />';
-					}
-					
-				} else {
-					echo '<img src="public/css/toolPost.png" />Aucun outil<br />';
-				}
-			?>
-
-			<aside class="infoPost">
-				(dans <a style="color: <?=$POST['colorCat'];?>" href="index.php?view=posts&amp;type=<?=$POST['Type']?>"><b><?= $POST['nameCat'];?></b></a>)<br />
-				<img src="public/css/datePost.png" />le <?=$regex->date($POST['datePost']);?>
-			</aside>
+		<div class="headerPost title-section">
+			<div class="blur-bg"></div>
+			<div class="infoPost" id="category">
+				<p>
+					Dans <a style="color: <?=$POST['colorCat']?>" href="/#!/posts?type=<?=$POST['Type']?>"><b><?=$POST['nameCat']?></b></a>
+				</p>
+						
+				<div class="svg-calendar"></div>
+				<p>
+					<?=$regex->date($POST['datePost'])?>
+				</p>
 			</div>
 
-			<div class="content_new">
-					<?=$POST['contentPost'];?>
+			<div class="infoPost" id="work">
+				<div class="svg-work"></div>
+				<p>
+					<?php if ($POST['Work'] != NULL): ?>
+						<?=$POST['nameWork']?>
+					<?php else: ?>
+						Dans aucune partie de travail
+					<?php endif; ?>
+				</p>
 			</div>
+			
+			<div class="infoPost" id="tools">
+
+			<?php if ($toolsInPost != NULL): ?>
+				<?php foreach ($toolsInPost as $tool ): ?>
+
+					<div class="tool">
+						<?php if ($tool['nameTool'] == NULL): ?> 
+							<div class="svg-none"></div>
+							<p class="nameTool">Aucun outil.</p>
+						<?php else: ?>
+							<img class="svg-tool" src="/public/img/tools/<?=$tool['idTool']?>.svg"></img>
+							<p class="nameTool"><?=$tool['nameTool']?></p>
+						<?php endif; ?>
+							
+						<p class="timeTool"><?=$regex->time($tool['timeTool'])?></p>
+					</div>
+				<?php endforeach; ?>
+			<?php else: ?>
+
+			<div class="infoPost">
+				<div class="svg-none"></div>
+				<p class="nameTool">Aucun outil</p>
+			</div>
+
+			<?php endif;?>
+
+			</div>
+		</div>
+
+		<div class="post content-section">
+				<?=$POST['contentPost'];?>
+		</div>
 	</article>
 </section>
+
+<script type='text/javascript'>
+	document.title = "<?=$POST['titlePost']; ?>.";
+</script>

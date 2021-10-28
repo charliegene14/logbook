@@ -11,7 +11,7 @@ try {
 
 	if (!empty($_GET['id']) AND intval($_GET['id']))
 	{
-		$FULLPOST = $dbPosts->getPost($_GET['id']);
+		$POST = $dbPosts->getPost($_GET['id'])->fetch();
 		$toolsInPost = $dbPosts->getTools($_GET['id']);
 		
 	}

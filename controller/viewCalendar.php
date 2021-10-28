@@ -58,7 +58,7 @@ try {
 
         foreach($dataCats as $cat){
             $cat['Month'] = $i;
-            array_push($newCatsArray, $cat);
+            array_push($newCatsArray, $cat); 
         }
 
         foreach($dataTools as $tool){
@@ -68,9 +68,15 @@ try {
 
         $dataTotal['Month'] = $i;
 
-        array_push  ($totalHoursInAllMonths , $dataTotal);
-        array_push  ($catsHoursInAllMonths  , $newCatsArray);
-        array_push  ($toolsHoursInAllMonths , $newToolsArray);
+        if (!empty($newCatsArray)) {
+            array_push  ($catsHoursInAllMonths  , $newCatsArray);
+        }
+        if (!empty($newToolsArray)) {
+            array_push  ($toolsHoursInAllMonths , $newToolsArray);
+        }
+        if (!empty($dataTotal['totalFloat'])) {
+            array_push  ($totalHoursInAllMonths , $dataTotal);
+        }
     }
 
     $jsCatsInAllMonths   = json_encode($catsHoursInAllMonths);
