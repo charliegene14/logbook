@@ -1,9 +1,10 @@
-<?php 
-require_once 'model/dbProjects.php';
-require_once 'model/regex.php';
+<?php
 
-function viewVersions()
-{
+try {
+    require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/model/passChecking.php'; passCheck();
+    require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/dbProjects.php';
+    require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/regex.php';
+
     if (empty($_GET['id']) OR !intval($_GET['id']))
     {
         throw new Exception('Oops, projet introuvable.');
@@ -16,6 +17,9 @@ function viewVersions()
         $PROJ = $dbProj->getProject($_GET['id']);
         $listVersions = $dbProj->getVersions($_GET['id']);
 
-        require 'view/viewVersions.php';
     }
+    
+} catch(Exception $e) {
+
+	require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/view/exception.php';
 }

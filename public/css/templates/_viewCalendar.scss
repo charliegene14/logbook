@@ -1,0 +1,231 @@
+section#calendar {
+
+    .page-calendar-head {
+        position: relative;
+        margin-top: $rem-16;
+        margin-bottom: $rem-16;
+
+        .blur-bg {
+            position: absolute;
+            left: -$rem-16;
+
+            border-radius: $rem-4;
+            background-color: transparentize($black, 0.9);
+            backdrop-filter: blur(4px);
+            
+            width: 100vw;
+            height: 100%;
+        }
+
+        h2, p {position: relative; margin-right: $rem-16;}
+        a {color: $black;}
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+    }
+
+    .main-arrow-down {
+        position:relative;
+        left: 50%;
+
+        width: $rem-32;
+        height: $rem-32;
+
+        margin: $rem-32;
+
+        background-color: $black;
+        mask-image: url('/public/css/images/next.svg');
+        cursor: pointer;
+
+        transform: translateX(-100%) rotate(90deg);
+    }
+
+    .charts-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-content: center;
+    }
+
+    .chart {
+        margin-top: $rem-32;
+        margin-bottom: $rem-32;
+    }
+
+    .radar_chart {
+        max-width: $rem-512;
+        max-height: $rem-512;
+    }
+
+    .bar_chart canvas {
+        width: 100%!important;
+
+        @media only screen and (min-width: 480px) {
+            min-width: $rem-512!important;
+        }
+    }
+
+    .donut_chart {
+        position: relative;
+
+        .centerDonutChart {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    #header {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+
+        #header-link a {
+            display: inline-flex;
+            font-weight: bold;
+            color: $black;
+            margin-left: $rem-16;
+            cursor: pointer;
+
+            &:before {
+                content: '';
+                width: $rem-24;
+                height: $rem-24;
+                margin-right: $rem-8;
+                background-color: $black;
+                mask-image: url('/public/css/images/next.svg');
+            }
+        }
+    }
+
+    #calendar-container, #stats-container {
+        margin-top: $rem-16;
+        margin-bottom: $rem-16;
+    }
+
+    #calendar-container {
+
+        table#calendar-body {
+            width: 100%;
+            border-collapse: collapse;
+
+            td.not-month {
+                background-color: transparentize($black, 0.9);
+            }
+
+            td.today-date {
+                background-color: transparentize($blue, 0.6);
+            }
+
+            td {
+                border: $rem-2 solid $grey;
+                height: $rem-64;
+                padding: $rem-4;
+                vertical-align: top;
+            }
+
+            .calendar-post-container {
+                position: relative;
+
+                .calendar-chip-post {
+                    display: block;
+                    position: relative;
+                    z-index: $chip-post-index;
+
+                    width: $rem-24;
+                    height: $rem-24;
+
+                    border-radius: $rem-24;
+                    cursor: pointer;
+
+                    &:hover + .calendar-post {
+                        display: block;
+                    }
+                }
+
+                .calendar-post {
+                    display: none;
+                    position: absolute;
+                    z-index: $calendar-post-index;
+
+                    width: max-content;
+                    height: max-content;
+
+                    .svg-work {
+                        width: $rem-20;
+                        height: $rem-20;
+                        background-color: $black;
+                        mask-image: url('/public/css/images/work.svg');
+                    }
+
+                    .svg-none {
+                        width: $rem-20;
+                        height: $rem-20;
+                        background-color: $black;
+                        mask-image:url('/public/css/images/forbidden.svg');
+                    }
+
+                    .svg-tool {
+                        max-width: $rem-32;
+                        max-height: $rem-32;
+                    }
+
+                    .calendar-title-post,  .calendar-work-post, .calendar-tools-post-container{
+                        
+                        position: relative;
+                        padding: $rem-4;
+
+                        &:not(:last-child) {
+                            display: flex;
+                            border-bottom: $rem-2 dashed $grey;
+                        }
+                    }
+
+                    .calendar-tool-post {
+                        display: flex;
+                        align-items: center;
+                        p {margin-right: $rem-16;}
+                    }
+
+                    &:hover {
+                        display: block;
+                    }
+                }
+
+                .calendar-post .blur-bg {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+
+                    border-radius: $rem-4;
+                    background-color: transparentize($black, 0.9);
+                    backdrop-filter: blur(16px);
+                }
+            }
+        }
+
+        #calendar-legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: $rem-8;
+
+            .color-legend {
+                display: inline-block;
+                width: $rem-24;
+                height: $rem-24;
+                border-radius: $rem-24;
+                margin-right: $rem-8;
+            }
+
+            p {
+                display: inline-flex;
+                align-items: middle;
+                font-weight: bold;
+                margin-right: $rem-16;
+            }
+        }
+
+    }
+}

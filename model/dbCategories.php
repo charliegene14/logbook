@@ -1,6 +1,6 @@
 <?php 
 
-require_once 'model/database.php';
+require_once realpath($_SERVER['DOCUMENT_ROOT']).'/model/database.php';
 
 class dbCategories extends database
 {
@@ -18,7 +18,9 @@ class dbCategories extends database
 								FROM category_post cp
 								INNER JOIN post p 
 								ON cp.Type = p.Type
-								WHERE p.Tool = ?
+								INNER JOIN tool_to_post ttp
+								ON ttp.idPost = p.idPost
+								WHERE ttp.idTool = ?
 								GROUP BY cp.Type");
 
 		$QUERY->execute(array($idTool));
@@ -44,13 +46,15 @@ class dbCategories extends database
 		$DB = $this->dbConnect();
 
 		$QUERY = $DB->prepare('SELECT p.Type,
-									SUM(TIME_TO_SEC(p.timePost)) / 3600 as totalFloat, 
-									SEC_TO_TIME(SUM(TIME_TO_SEC(p.timePost))) as totalStr,
+									SUM(TIME_TO_SEC(ttp.timeTool)) / 3600 as totalFloat, 
+									SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool))) as totalStr,
 									cp.nameCat,
 									cp.colorCat
 								FROM post p
 								LEFT JOIN category_post cp
 								ON p.Type = cp.Type
+								LEFT JOIN tool_to_post ttp
+								ON p.idPost = ttp.idPost
 								WHERE p.datePost
 								BETWEEN ?
 								AND ?
@@ -77,13 +81,15 @@ class dbCategories extends database
 		$DB = $this->dbConnect();
 
 		$QUERY = $DB->prepare('SELECT p.Type,
-									SUM(TIME_TO_SEC(p.timePost)) / 3600 as totalFloat, 
-									SEC_TO_TIME(SUM(TIME_TO_SEC(p.timePost))) as totalStr,
+									SUM(TIME_TO_SEC(ttp.timeTool)) / 3600 as totalFloat, 
+									SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool))) as totalStr,
 									cp.nameCat,
 									cp.colorCat
 								FROM post p
 								LEFT JOIN category_post cp
 								ON p.Type = cp.Type
+								LEFT JOIN tool_to_post ttp
+								ON p.idPost = ttp.idPost
 								WHERE p.datePost
 								BETWEEN ?
 								AND ?
@@ -106,13 +112,15 @@ class dbCategories extends database
 		$DB = $this->dbConnect();
 
 		$QUERY = $DB->prepare('SELECT p.Type,
-									SUM(TIME_TO_SEC(p.timePost)) / 3600 as totalFloat, 
-									SEC_TO_TIME(SUM(TIME_TO_SEC(p.timePost))) as totalStr,
+									SUM(TIME_TO_SEC(ttp.timeTool)) / 3600 as totalFloat, 
+									SEC_TO_TIME(SUM(TIME_TO_SEC(ttp.timeTool))) as totalStr,
 									cp.nameCat,
 									cp.colorCat
 								FROM post p
 								LEFT JOIN category_post cp
 								ON p.Type = cp.Type
+								LEFT JOIN tool_to_post ttp
+								ON p.idPost = ttp.idPost
 								GROUP BY p.Type');
 
 		$QUERY->execute();

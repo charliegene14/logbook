@@ -21,52 +21,16 @@ class dbPosts extends database
 		return $NUMBER;
 	}
 
-	public function getList($wherePost, $postByPage)
-	{
-		$DB = $this->dbConnect();
-
-		$REQ_TOTAL_POSTS = $DB->prepare("SELECT COUNT(idPost) AS total FROM post p WHERE $wherePost");
-		$REQ_TOTAL_POSTS->execute();
-
-		$TOTAL_POSTS = $REQ_TOTAL_POSTS->fetch()['total'];
-		$TOTAL_PAGE = ceil($TOTAL_POSTS / $postByPage);
-
-		if(isset($_GET['pg']) AND intval($_GET['pg']) AND $_GET['pg'] > 0)
-		{
-			$PAGE_NOW = $_GET['pg'];
-			if ($PAGE_NOW > $TOTAL_PAGE)
-			{
-				throw new Exception('Désolé, la page demandée n\'éxiste pas.');
-			}
-		}
-		else
-		{
-			$PAGE_NOW = 1;
-		}
-
-		$FIRST_POST = ($PAGE_NOW - 1) * $postByPage;
-
-		$REQ_POSTS = $DB->prepare("SELECT * FROM post p
-							INNER JOIN category_post cp
-							ON p.Type = cp.Type
-							LEFT JOIN work_parts wp
-							ON p.Work = wp.idWork
-							LEFT JOIN tools t
-							ON p.Tool = t.idTool
-							WHERE $wherePost
-							ORDER BY p.idPost DESC
-							LIMIT $FIRST_POST, $postByPage");
-
-		if ($this->dbExist($REQ_POSTS, NULL))
-		{
-			$REQ_POSTS->execute();
-			return [$REQ_POSTS, $TOTAL_PAGE, $PAGE_NOW];
-		}
-		else
-		{
-			throw new Exception('Désolé, une erreur est survenue.');
-		}
-		
+	public function getAll() {
+		$db = $this->dbConnect();
+		$query = $db->prepare(' SELECT * FROM post p
+                                LEFT JOIN category_post cp ON p.Type = cp.Type
+                                LEFT JOIN work_parts wp ON p.Work = wp.idWork
+                                LEFT JOIN tool_to_post ttp ON p.idPost = ttp.idPost
+                                LEFT JOIN tools t ON ttp.idTool = t.idTool
+                                ORDER BY p.datePost DESC, p.idPost DESC');
+        $query->execute();
+		return $query;
 	}
 
 	public function getPost($idPost)
@@ -78,8 +42,6 @@ class dbPosts extends database
 								ON p.Type = cp.Type
 								LEFT JOIN work_parts wp
 								ON p.Work = wp.idWork
-								LEFT JOIN tools t
-								ON p.Tool = t.idTool
 								WHERE idPost = ?");
 
  		if ($this->dbExist($QUERY, $idPost))
@@ -93,31 +55,34 @@ class dbPosts extends database
 		}
 	}
 
-	public function insert($idPost, $type, $work, $tool, $timePost, $titlePost, $datePost, $contentPost)
+	public function getTools($idPost) {
+		$DB = $this->dbConnect();
+		$QUERY = $DB->prepare("SELECT * FROM tool_to_post WHERE idPost = ?");
+
+		$QUERY->execute(array($idPost));
+
+		$array = [];
+		while ($data = $QUERY->fetch()) {
+			array_push($array, $data);
+		}
+
+		return $array;
+	}
+
+	public function insert($idPost, $type, $work, $titlePost, $datePost, $contentPost)
 	{
 		$DB = $this->dbConnect();
-		$QUERY = $DB->prepare('INSERT INTO post (idPost, Type, Work, Tool, timePost, titlePost, datePost, contentPost)
-							VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+		$QUERY = $DB->prepare('INSERT INTO post (idPost, Type, Work, titlePost, datePost, contentPost)
+							VALUES (?, ?, ?, ?, ?, ?)');
 
-		if ($work == 'NULL' AND $tool == 'NULL')
-		{
-			$QUERY->execute(array($idPost, $type, NULL, NULL, $timePost, $titlePost, $datePost, $contentPost));
-		}
-		elseif ($tool == 'NULL')
-		{
-			$QUERY->execute(array($idPost, $type, $work, NULL, $timePost, $titlePost, $datePost, $contentPost));
-		}
-		elseif ($work == 'NULL')
-		{
-			$QUERY->execute(array($idPost, $type, NULL, $tool, $timePost, $titlePost, $datePost, $contentPost));
-		}
-		else
-		{
-			$QUERY->execute(array($idPost, $type, $work, $tool, $timePost, $titlePost, $datePost, $contentPost));
+		if ($work == 'NULL') {
+			$QUERY->execute(array($idPost, $type, NULL, $titlePost, $datePost, $contentPost));
+		} else {
+			$QUERY->execute(array($idPost, $type, $work, $titlePost, $datePost, $contentPost));
 		}
 	}
 
-	public function update($idPost, $type, $work, $tool, $timePost, $titlePost, $datePost, $contentPost)
+	public function update($idPost, $type, $work, $titlePost, $datePost, $contentPost)
 	{
 		$DB = $this->dbConnect();
 		$CHECKID = $DB->prepare('SELECT * FROM post WHERE idPost = ?');
@@ -125,8 +90,6 @@ class dbPosts extends database
 		$QUERY = $DB->prepare('UPDATE post
 								SET Type = ?,
 								Work = ?,
-								Tool = ?,
-								timePost = ?,
 								titlePost = ?,
 								datePost = ?,
 								contentPost = ?
@@ -134,21 +97,13 @@ class dbPosts extends database
 
 		if ($this->dbExist($CHECKID, $idPost))
 		{
-			if ($work == 'NULL' AND $tool == 'NULL')
+			if ($work == 'NULL')
 			{
-				$QUERY->execute(array($type, NULL, NULL, $timePost, $titlePost, $datePost, $contentPost, $idPost));
-			}
-			elseif ($tool == 'NULL')
-			{
-				$QUERY->execute(array($type, $work, NULL, $timePost, $titlePost, $datePost, $contentPost, $idPost));
-			}
-			elseif ($work == 'NULL')
-			{
-				$QUERY->execute(array($type, NULL, $tool, $timePost, $titlePost, $datePost, $contentPost, $idPost));
+				$QUERY->execute(array($type, NULL, $titlePost, $datePost, $contentPost, $idPost));
 			}
 			else
 			{
-				$QUERY->execute(array($type, $work, $tool, $timePost, $titlePost, $datePost, $contentPost, $idPost));
+				$QUERY->execute(array($type, $work, $titlePost, $datePost, $contentPost, $idPost));
 			}
 		}
 		else
@@ -171,6 +126,47 @@ class dbPosts extends database
 		else
 		{
 			throw new Exception('Désolé, l\'article est introuvable');
+		}
+	}
+
+	public function insertTool(int $idTool = null, int $idPost, $time) {
+		$DB = $this->dbConnect();
+		
+		$QUERY = $DB->prepare('INSERT INTO tool_to_post (idTool, idPost, timeTool)
+								VALUES (?, ?, ?)');
+
+		if ($idTool == NULL) {
+			$QUERY->execute(array(NULL, $idPost, $time));
+		} else {
+			$QUERY->execute(array($idTool, $idPost, $time));
+		}
+	}
+
+	public function updateTool(int $id, int $idTool = null, int $idPost, $time) {
+		$DB = $this->dbConnect();
+		$CHECKID = $DB->prepare('SELECT * FROM tool_to_post WHERE id = ?');
+
+		$QUERY = $DB->prepare('UPDATE tool_to_post
+								SET idTool = ?,
+								idPost = ?,
+								timeTool = ?
+								WHERE id = ?');
+
+		if ($this->dbExist($CHECKID, $id)) {
+			$QUERY->execute(array($idTool, $idPost, $time, $id));
+		} else {
+			throw new Exception('Désolé, une erreur est survenue.');
+		}
+	}
+
+	public function deleteTool(int $id) {
+		$DB = $this->dbConnect();
+		$CHECKID = $DB->prepare('SELECT * FROM tool_to_post WHERE id = ?');
+		$QUERY = $DB->prepare('DELETE FROM tool_to_post WHERE id = ?');
+
+		if ($this->dbExist($CHECKID, $id))
+		{
+			$QUERY->execute(array($id));
 		}
 	}
 }

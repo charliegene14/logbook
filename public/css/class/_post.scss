@@ -1,0 +1,16 @@
+.post {
+
+    h2 {
+        text-indent: $rem-32;
+        color: lighten($black, 15);
+    }
+
+    h3 {
+        text-indent: $rem-64;
+        color: lighten($black, 30);
+    }
+
+    p {
+        text-indent: $rem-32;
+    }
+}

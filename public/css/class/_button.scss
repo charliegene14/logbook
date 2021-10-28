@@ -1,0 +1,17 @@
+.button {
+    display: inline-block;
+    padding: $rem-4;
+    border-radius: $rem-2;
+    width: fit-content;
+    height: fit-content;
+
+    cursor: pointer;
+    background: linear-gradient(135deg, lighten($black, 10%) 0%, lighten($black, 25%) 100%);
+    color: $white!important;
+
+    white-space: nowrap;
+
+    &:hover {
+        background: lighten($black, 25%);
+    }
+}

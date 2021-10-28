@@ -1,0 +1,21 @@
+@mixin kf-text-up($from-top, $to-top) {
+    @keyframes text-up {
+        from {
+            top: $from-top;
+        }
+        to {
+            top: $to-top;
+        }
+    }
+}
+
+@mixin kf-text-down($from-top, $to-top) {
+    @keyframes text-down {
+        from {
+            top: $from-top;
+        }
+        to {
+            top: $to-top;
+        }
+    }
+}

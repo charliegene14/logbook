@@ -1,0 +1,27 @@
+main {
+
+    z-index: $main-index;
+
+    position: relative;
+    top: $rem-64;
+
+    height: calc(100vh - #{$rem-64});
+    overflow-x: hidden;
+
+    color: $black;
+
+    @media only screen and (min-width: 660px) {
+        height: 100vh;
+        width: calc(100vw - #{$rem-64});
+        top: 0;
+        left: $rem-64;
+    }
+
+    &::-webkit-scrollbar {
+        width: $rem-8;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: transparentize($black, 0.4);
+        border-radius: $rem-8;
+    }
+}

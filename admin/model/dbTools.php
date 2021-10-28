@@ -13,24 +13,27 @@ class dbTools extends database
 
 	public function getByType($typeCat)
 	{
-		$DB= $this->dbConnect();
+		$DB = $this->dbConnect();
 		$QUERY = $DB->prepare("SELECT t.idTool, t.nameTool FROM tools t
+								INNER JOIN tool_to_post ttp
+								ON t.idTool = ttp.idTool
 								INNER JOIN post p 
-								ON t.idTool = p.Tool
+								ON ttp.idPost = p.idPost
 								WHERE p.Type = ?
 								GROUP BY t.idTool");
 
-			$QUERY->execute(array($typeCat));
-			return $QUERY;
-
+		$QUERY->execute(array($typeCat));
+		return $QUERY;
 	}
 
 	public function getByWork($idWork)
 	{
-		$DB= $this->dbConnect();
+		$DB = $this->dbConnect();
 		$QUERY = $DB->prepare("SELECT t.idTool, t.nameTool FROM tools t
+								INNER JOIN tool_to_post ttp
+								ON t.idTool = ttp.idTool
 								INNER JOIN post p 
-								ON t.idTool = p.Tool
+								ON ttp.idPost = p.idPost
 								WHERE p.Work = ?
 								GROUP BY t.idTool");
 
@@ -55,14 +58,14 @@ class dbTools extends database
 		}
 	}
 
-	public function insert($nameTool)
+	public function insert($idTool, $nameTool)
 	{
 		$DB = $this->dbConnect();
 
 		$QUERY = $DB->prepare('INSERT INTO tools (idTool, nameTool)
-								VALUES (NULL, ?) ');
+								VALUES (?, ?) ');
 
-		$QUERY->execute(array($nameTool));
+		$QUERY->execute(array($idTool, $nameTool));
 	}
 
 	public function delete($idTool)
@@ -82,5 +85,20 @@ class dbTools extends database
 		{
 			throw new Exception('Désolé, l\'outil n\'éxiste pas.');
 		}
+	}
+
+	public function getIcon($idTool) {
+		if (is_file('../public/img/tools/'.$idTool.'.svg')):
+		?>
+			<img width='64px' height='64px' class="admin_tool_icon" src="../public/img/tools/<?=$idTool?>.svg" />
+		<?php
+		endif;
+	}
+
+	public function nextID() {
+		$DB = $this->dbConnect();
+		$QUERY = $DB->query('SELECT MAX(idTool)+1 AS number FROM tools');
+
+		return $QUERY->fetch()['number'];
 	}
 }

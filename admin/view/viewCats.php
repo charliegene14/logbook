@@ -6,30 +6,33 @@
 
 	<div class="tools">
 		<p>
-			<form method="post" action="index.php?view=cats&works=<?=$_GET['works'] ?>&insertTools&token=<?=$_SESSION['token']?>">
+			<form method="post" enctype="multipart/form-data" action="index.php?view=cats&works=<?=$_GET['works'] ?>&insertTools&token=<?=$_SESSION['token']?>">
 				<fieldset>
+						<input type="file" name="iconTool" required style="width: 5rem;" /><br />
 						<input type="text" name="nameTool" size="6" placeholder="Nom de l'outil" required /><br />
 						<input type="submit" value="Ajouter" />
 				</fieldset>
 			</form>
 		</p>
 
-		<?php 
-		while($TOOL = $listTools->fetch())
-		{
-			echo '
-				<p>
-					<form method="post" action="index.php?view=cats&works='.$_GET['works'].'&updateTools='.$TOOL['idTool'].'&token='.$_SESSION['token'].'">
-						<fieldset>
-								<input type="text" size="6" name="name'.$TOOL['idTool'].'" value="'.$TOOL['nameTool'].'" required /><br />
-								<input type="submit" value="Modifier" />
-								<a href="index.php?view=cats&works='.$_GET['works'].'&delTools='.$TOOL['idTool'].'&token='.$_SESSION['token'].'">(X)</a>
-						</fieldset>
-					</form>
-				</p>
-			';
-		}
-		?>
+		<?php while($TOOL = $listTools->fetch()): ?>
+
+		<p>
+			<form method="post" enctype="multipart/form-data" action="index.php?view=cats&works=<?=$_GET['works']?>&updateTools=<?=$TOOL['idTool']?>&token=<?=$_SESSION['token']?>">
+				<fieldset>
+
+					<?php print_r($dbTools->getIcon($TOOL['idTool'])); ?>
+					<br />
+					<input type="file" name="iconTool" required style="width: 5rem;" /><br />
+					<input type="text" size="6" name="name<?=$TOOL['idTool']?>" value="<?=$TOOL['nameTool']?>" required /><br />
+					<input type="submit" value="Modifier" />
+					<a href="index.php?view=cats&works=<?=$_GET['works']?>&delTools=<?=$TOOL['idTool']?>&token=<?=$_SESSION['token']?>">(X)</a>
+				</fieldset>
+			</form>
+		</p>
+
+		<?php endwhile; ?>
+
 	</div>
 
 	<div class="cats">

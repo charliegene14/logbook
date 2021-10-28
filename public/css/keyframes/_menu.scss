@@ -1,0 +1,48 @@
+
+@keyframes menu-open-mobile {
+    from {
+        height: calc(0vh)
+    }
+}
+
+@keyframes menu-open-normal {
+    from {
+        width: calc(0vw)
+    }
+}
+
+
+@keyframes menu-close-mobile {
+    from {
+        height: calc(100vh - #{$rem-64});
+    }
+    to {
+        height: 0;
+        overflow: hidden;
+    }
+}
+
+@keyframes menu-close-normal {
+    to {
+        width: 0;
+        overflow: hidden;
+    }
+}
+
+@keyframes menu-title-up {
+    from {
+        top: 100%;
+    }
+    to {
+        top: $rem-16;
+    }
+}
+
+@keyframes menu-title-down {
+    from {
+        top: $rem-16;
+    }
+    to {
+        top: 100%;
+    }
+}

@@ -1,0 +1,29 @@
+section:not(#viewBlock) {
+    
+    padding-right: $rem-16;
+    padding-left: $rem-16;
+
+    @media only screen and (min-width: 660px) {
+        padding-right: $rem-64;
+        padding-left: $rem-64;
+        padding-top: $rem-32;
+        padding-bottom: $rem-32;
+    }
+
+    @media only screen and (min-width: 870px) {
+        padding-right: $rem-96;
+        padding-left: $rem-96;
+    }
+
+    .title-section, .content-section {
+        position: relative;
+    } 
+
+    .title-section {
+        animation: section-right-appears 1s cubic-bezier(0, 0, 0.3, 1);
+    }
+
+    .content-section {
+        animation: section-right-appears 2s cubic-bezier(0, 0, 0.3, 1);
+    }
+}

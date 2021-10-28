@@ -1,136 +1,111 @@
-<?php  $pageTitle = 'Articles'; ?>
-<?php  ob_start(); ?>
+<?php require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/controller/viewPosts.php';?>
 
-<section class="news">
+<section id="posts">
 
-	<aside class="sort">
-		<form method="post" action="index.php?view=posts">
-			<fieldset>
+	<div class="title-section">
+		<h1>Articles.</h1>
 
-				<select name="type" onChange="this.form.submit()">
+		<aside class="sort">
+			<form id="posts-sorting">
+
+				<select onchange="posts_submit()" name="type" id="type">
 					<option value="">Toute catégorie</option>
 
 					<?php
-					while ($CAT = $categories->fetch()) {
-						echo '<option value="'.$CAT['Type'].'"';
+					if ($queryTypes != null) {
+						while ($CAT = $queryTypes->fetch()) {
+							echo '<option value='.$CAT['Type'];
 
-						if (!empty($_POST['type']) && $_POST['type'] == $CAT['Type'] OR !empty($_GET['type']) && $_GET['type'] == $CAT['Type']) {
-							echo 'selected';
+							if ($type == $CAT['Type']) {
+								echo ' selected';
+							}
+
+							echo '>'.$CAT['nameCat'].'</option>';
 						}
-
-						echo '>'.$CAT['nameCat'].'</option>';
 					}
 					?>
 				</select>
 
-				<select name="work" onChange="this.form.submit()">
+				<select onchange="posts_submit()" name="work" id="work">
 					<option value="">Toute partie de travail</option>
 
-					<?php 
-					while ($WORK = $workParts->fetch()) {
-						echo '<option value="'.$WORK['idWork'].'"';
+					<?php
+					if ($queryWorks != null) {
+						while ($WORK = $queryWorks->fetch()) {
+							echo '<option value='.$WORK['idWork'].'';
 
-						if (!empty($_POST['work']) && $_POST['work'] == $WORK['idWork'] OR !empty($_GET['work']) && $_GET['work'] == $WORK['idWork']) {
-							echo 'selected';
+							if ($work == $WORK['idWork']){
+								echo ' selected';
+							}
+							echo '>'.$WORK['nameWork'].'</option>';
 						}
-						echo '>'.$WORK['nameWork'].'</option>';
 					}
 					?>
 				</select>
 
-				<select name="tool" onChange="this.form.submit()">
+				<select onchange="posts_submit()" name="tool" id="tool">
 					<option value="">Tous les outils</option>
 
-					<?php 
-					while ($TOOL = $tools->fetch()) {
+					<?php
+					if ($queryTools != null) {
+						while ($TOOL = $queryTools->fetch()) {
+							echo '<option value='.$TOOL['idTool'];
 
-						echo '<option value="'.$TOOL['idTool'].'"';
-
-						if (!empty($_POST['tool']) AND $_POST['tool'] == $TOOL['idTool'] OR !empty($_GET['tool']) && $_GET['tool'] == $TOOL['idTool']) {
-							echo 'selected';
+							if ($tool == $TOOL['idTool']) {
+								echo ' selected';
+							}
+							echo '>'.$TOOL['nameTool'].'</option>';
 						}
-
-						echo '>'.$TOOL['nameTool'].'</option>';
 					}
 					?>
 				</select>
+			</form>
+		</aside>
 
-			</fieldset>
-		</form>
-	</aside>
+	</div>
+	
 
-	<?php while ($POST = $REQ_POSTS->fetch()) : ?>
-		<article>
+	<div class="content-section">
+		<?php foreach ($posts as $POST) : ?>
+			<article id="<?=$POST['idPost']?>">
+				<div class="blur-bg"></div>
+				<h2 class="titlePost"><a href="/#!/posts/<?=$POST['idPost']?>"><?=$POST['titlePost']?></a></h2>
 
-			<h1 class="titlePost"><a href="index.php?view=fullpost&amp;id=<?=$POST['idPost']?>"><?=$POST['titlePost']?></a></h1>
+				<aside class="infoPost">
+					<p>
+						Dans <a style="color: <?=$POST['colorCat']?>" href="/#!/posts?type=<?=$POST['Type']?>"><b><?=$POST['nameCat']?></b></a>
+					</p>
+						
+					<div class="svg-calendar"></div>
 
-			<aside class="infoPost">
-				(dans <a style="color: <?=$POST['colorCat']?>" href="index.php?view=posts&amp;type=<?=$POST['Type']?>"><b><?=$POST['nameCat']?></b></a>)<br />
-				<img src="public/css/datePost.png" />le <?=$regex->date($POST['datePost'])?>
-			</aside>
+					<p>
+						<?=$regex->date($POST['datePost'])?>
+					</p>
+				</aside>
 
-			<div class="previewPost">
-				<p>
-				<?php
-				if (strlen($regex->previewPost($POST['contentPost'])) > $MAX_LENGTH) {
-					echo substr($regex->previewPost($POST['contentPost']), 0, $MAX_LENGTH)?>
-					[...].
-					<br />
-					<br />
+				<div class="previewPost">
+					<p>
+						<?php if (strlen($regex->previewPost($POST['contentPost'])) > $MAX_LENGTH): ?>
+							<?php echo substr($regex->previewPost($POST['contentPost']), 0, $MAX_LENGTH); ?>
+							[...].
+					</p>
+							<a class="button" href="/#!/posts/<?= $POST['idPost']; ?>">Lire la suite</a>
+						<?php else: ?>
+							<?php echo ($regex->previewPost($POST['contentPost'])); ?>
+					</p>
+							<a class="button" href="/#!/posts/<?= $POST['idPost']; ?>">Voir l'article</a>
+						<?php endif;?>
+				</div>
+			</article>
+		<?php endforeach; ?>
 
-					<button class="button-read" onClick="window.location.href='index.php?view=fullpost&amp;id=<?=$POST['idPost']?>'">
-						Lire la suite
-					</button>
-
-				<?php
-				} else {
-					echo ($regex->previewPost($POST['contentPost'])) ?>
-					<br />
-					<br />
-					<button class="button-read" onClick="window.location.href='index.php?view=fullpost&amp;id=<?=$POST['idPost']?>'">
-						Lire la suite
-					</button>
-				
-				<?php }?>
-				</p>
-				
-			</div>
-			<hr />
-		</article>
-	<?php endwhile; ?>
-
-	<p class="pages">
-		<?php 
-			for($PAGE=1; $PAGE <= $TOTAL_PAGE; $PAGE++)
-			{
-				if ($PAGE == $PAGE_NOW)
-				{
-				echo ' <strong> '.$PAGE.' </strong> ';
-				}
-				else
-				{
-					echo ' <a href="index.php?view=posts';
-						if (!empty($_GET['type']))
-						{
-							echo '&amp;type='.$_GET['type'].'';
-						}
-
-						if (!empty($_GET['work']))
-						{
-							echo '&amp;work='.$_GET['work'].'';
-						}
-
-						if (!empty($_GET['tool']))
-						{
-							echo '&amp;tool='.$_GET['tool'].'';
-						}
-
-						echo '&amp;pg='.$PAGE.'"> '.$PAGE.' </a>';
-				}
-			}
-		?>
-	</p>
+		<div class="pagination">
+			<?php $filteredPosts->getPagination($_GET['pg']); ?>
+		</div>
+	</div>
 </section>
 
-<?php  $pageContent = ob_get_clean(); ?>
-<?php  require('template.php'); ?>
+<script type='text/javascript'>
+	document.title = 'Articles.'
+</script>
+<script type="text/javascript" src="/public/js/viewPosts.js"></script>

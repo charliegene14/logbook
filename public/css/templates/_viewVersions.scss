@@ -1,0 +1,45 @@
+section#versions {
+
+    div#list-versions {
+
+        article.version div.changelog {
+            display: none;
+            max-height: 0;
+
+	        overflow: hidden;
+            padding-top: $rem-32;
+            padding-bottom: $rem-32;
+
+            div.changelog-content {
+                margin: auto;
+                background-color: transparentize($black, 0.9);
+                border-radius: $rem-4;
+            }
+
+            &.active {
+                display: flex;
+                max-height: 1000px;
+
+                animation: changelog-active 1s ease-out;
+            }
+        }
+
+        article.version div.line {
+            display: flex;
+            border-bottom: $rem-2 solid $grey;
+
+            .cel {
+                padding: 1%;
+            }
+
+            .cel:first-child {
+                min-width: 10%;
+            }
+
+            .cel:not(:first-child) {
+                border-left: $rem-2 solid $grey;
+                min-width: 25%;
+            }
+        }
+    }
+}

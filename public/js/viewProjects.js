@@ -1,30 +1,21 @@
-let slide = document.getElementsByClassName("previewProject");
-let slideIndex = 1;
-showSlide(slideIndex);
+document.title = 'Portfolio.';
 
-function changeSlide(n)
-{
-	showSlide(slideIndex += n);
-}
+const swiper = new Swiper('.swiper', {
+	// Optional parameters
+	direction: 'horizontal',
+	centeredSlides: true,
+	spaceBetween: 32,
+  
+	// If we need pagination
+	pagination: {
+	  el: '.swiper-pagination',
+	  type: 'progressbar',
+	},
+  
+	// Navigation arrows
+	navigation: {
+	  nextEl: '.swiper-button-next',
+	  prevEl: '.swiper-button-prev',
+	},
+});
 
-function showSlide(n)
-{
-	let i;
-
-	if (n > slide.length)
-	{
-		slideIndex = 1;
-	}
-
-	if (n < 1)
-	{
-		slideIndex = slide.length;
-	}
-	 
-	for (i = 0; i < slide.length; i++)
-	{
-	   	slide[i].classList.remove('current');
-	}
-
-	slide[slideIndex-1].classList.add('current');
-}

@@ -54,7 +54,14 @@ class Regex
 
 	public function time($string)
 	{
-		$string = preg_replace('#([0-9]*):([0-5][0-9]):[0-9\.]{2,}#is', '$1h$2min', $string);
+		$string = preg_replace('#([0-9]*):([0-5][0-9]):[0-9\.]{2,}#is', '$1h&nbsp;$2min', $string);
 		return $string;
 	}
+
+	public function digitTime($string)
+	{
+		$string = preg_replace('#([0-9]*):([0-5][0-9]):[0-9\.]{2,}#is', '$1:$2', $string);
+		return $string;
+	}
+
 }

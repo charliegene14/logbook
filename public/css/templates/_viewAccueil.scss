@@ -1,0 +1,96 @@
+section#viewAccueil {
+    width: 100%;
+    height: 100%;
+
+    --swiper-theme-color: #161F27;
+
+    h1.title-section {height: $rem-64; }
+    h2 { font-size: $rem-24;}
+    h3 { text-indent: $rem-32; font-size: $rem-16; font-weight: normal;}
+
+    div.content-section {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-columns: 100%;
+
+        height: calc(100% - #{$rem-64});
+        max-height: calc(100% - #{$rem-64});
+        width: 100%;
+
+        article {
+            display: flex;
+            position: relative;
+            width: 100%;
+
+            grid-column: 1;
+            flex-direction: column;
+        }
+
+        article#tools-with-hours {
+            grid-row: 1;
+        }
+
+        article#tools-no-hours {
+            grid-row: 2;
+        }
+
+        article#trusted {
+            grid-row: 3;
+        }
+
+        div.swiper-toolsno,  div.swiper-hours, div.swiper-trusted {
+            position: relative;
+            margin: auto;
+            width: 100%;
+
+            padding-right: $rem-40;
+            padding-left: $rem-40;
+            overflow: hidden;
+        }
+
+        .swiper-button-prev:after, .swiper-button-next:after {
+            font-size: $rem-32;
+        }
+
+
+        .swiper-slide {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+    
+            img:not(.trusted-icon) {
+                max-width: $rem-64;
+                max-height: $rem-64;
+            }
+
+            &:hover > p.name {
+                display: inline-block;
+            }
+
+            .trusted-icon {
+                max-height: 100%;
+                max-width: 75%;
+                
+            }
+
+            p:not(.name) {
+                font-size: $rem-24;
+                font-family: $bebas;
+                opacity: 0.6;
+                margin-top: $rem-8;
+            }
+
+            p.name {
+                display: none;
+                position: absolute;
+                background-color: $white;
+                border: $rem-2 solid $grey;
+                border-radius: $rem-2;
+                font-weight: bold;
+                padding: $rem-4;
+                opacity: 0.8;
+            }
+        }
+    }
+}

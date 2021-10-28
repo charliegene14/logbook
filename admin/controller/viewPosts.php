@@ -5,6 +5,7 @@ require_once 'model/dbWorks.php';
 require_once 'model/dbCategories.php';
 require_once 'model/regex.php';
 require_once 'model/uploads.php';
+require_once 'model/FilteredPosts.php';
 
 function viewPostUpdate()
 {
@@ -25,6 +26,7 @@ function viewPostUpdate()
 
 		$GETPOST = $dbPosts->getPost($ID);
 		$POST = $GETPOST->fetch();
+		$toolsInPost = $dbPosts->getTools($ID);
 
 		$numberOfImg = $uploads->numberOfImg($ID);
 
@@ -32,13 +34,17 @@ function viewPostUpdate()
 		$listWorks = $dbWorks->getByType($POST['Type']);
 		$listTools = $dbTools->getAll();
 
+		$toolsArray = array();
+		while ($toolData = $listTools->fetch()) {
+			array_push($toolsArray, $toolData);
+		}
+
 		if (isset($_GET['update']) && isValidToken($_GET['token']))
 		{	
 			header('Location: index.php?view=postupdate&id='.$ID.'');
 			$TYPE = $_POST['Type'];
 			$WORK = $_POST['Work'];
-			$TOOL = $_POST['Tool'];
-			$TIME = $_POST['timePost'];
+
 			$TITLE = htmlspecialchars($_POST['titlePost']);
 			$DATE = $_POST['datePost'];
 			$CONTENT = $regex->fromBBCode($_POST['contentPost']);
@@ -48,7 +54,30 @@ function viewPostUpdate()
 				$uploads->uploadImg($ID);
 			}
 
-			$dbPosts->update($ID, $TYPE, $WORK, $TOOL, $TIME, $TITLE, $DATE, $CONTENT);
+			$dbPosts->update($ID, $TYPE, $WORK, $TITLE, $DATE, $CONTENT);
+
+			foreach ($_POST['tool'] as $tool) {
+
+				$timeTool = $tool['timeTool'];
+				$idTool = intval($tool['idTool']);
+
+				if ($idTool == 0) {$idTool = NULL; }
+
+				if ($timeTool == NULL || $timeTool == '00:00:00' || $timeTool == '00:00') {
+					
+					if ($tool['idTTP'] != NULL) {
+						$dbPosts->deleteTool($tool['idTTP']);
+					}
+
+				} else {
+					if ($tool['idTTP'] != NULL) {
+						$dbPosts->updateTool(intval($tool['idTTP']), $idTool, $ID, $timeTool);
+					} else {
+						$dbPosts->insertTool($idTool, $ID, $timeTool);
+					}
+				}
+			}
+
 			exit();
 		}
 		elseif (isset($_GET['del']) && isValidToken($_GET['token']))
@@ -74,15 +103,19 @@ function viewPostInsert()
 	$listWorks = $dbWorks->getAll();
 	$listTools = $dbTools->getAll();
 
+	$toolsArray = array();
+	while ($toolData = $listTools->fetch()) {
+		array_push($toolsArray, $toolData);
+	}
+
 	$newID = $dbPosts->getNumber('nextID');
 
 	if (isset($_GET['insert']) && isValidToken($_GET['token']))
 	{
 		header('Location: index.php?view=posts');
+
 		$TYPE = $_POST['Type'];
 		$WORK = $_POST['Work'];
-		$TOOL = $_POST['Tool'];
-		$TIME = $_POST['timePost'];
 		$TITLE = htmlspecialchars($_POST['titlePost']);
 		$DATE = $_POST['datePost'];
 		$CONTENT = $regex->fromBBCode($_POST['contentPost']);
@@ -91,145 +124,81 @@ function viewPostInsert()
 		{
 			$uploads->uploadImg($newID);
 		}
-		$dbPosts->insert($newID, $TYPE, $WORK, $TOOL, $TIME, $TITLE, $DATE, $CONTENT);
+
+		$dbPosts->insert($newID, $TYPE, $WORK, $TITLE, $DATE, $CONTENT);
+
+		foreach ($_POST['tool'] as $tool) {
+			$timeTool = $tool['timeTool'];
+				
+			if ($timeTool != NULL) {
+				if ($tool['idTool'] == 'null') {
+					$tool['idTool'] = NULL;
+				}
+				$dbPosts->insertTool($tool['idTool'],$newID, $tool['timeTool']);
+			}
+		}
 		exit();
 	}
+
 	require 'view/viewPostInsert.php';
 }
 
 function viewPosts()
 {
-			$regex = new Regex();
-			$dbPosts = new dbPosts();
-			$dbTools = new dbTools();
-			$dbWorks = new dbWorks();
-			$dbCategories = new dbCategories();
+	$MAX_LENGTH = 400;
+	$regex = new Regex();
 
-			if (isset($_GET['type']) AND !intval($_GET['type'])
-			OR isset($_GET['work']) AND !intval($_GET['work'])
-			OR isset($_GET['tool']) AND !intval($_GET['tool'])
-			OR isset($_GET['pg']) AND !intval($_GET['pg']))
-			{
-				throw new Exception('Désolé, une erreur est survenue');
-			}
+	if (isset($_GET['type']) AND !intval($_GET['type'])
+	OR isset($_GET['work']) AND !intval($_GET['work'])
+	OR isset($_GET['tool']) AND !intval($_GET['tool'])
+	OR isset($_GET['pg']) AND !intval($_GET['pg']))
+	{
+		throw new Exception('Désolé, une erreur est survenue');
+	}
 
-			///
-			if (!empty($_GET['type'])
-			&& empty($_GET['work'])
-			&& empty($_GET['tool']))
-			{
-				$SET = 'p.Type = '.$_GET['type'].'';
-				$categories = $dbCategories->getAll();
-				$workParts = $dbWorks->getByType($_GET['type']);
-				$tools = $dbTools->getByType($_GET['type']);
-			}
-			elseif (!empty($_POST['type'])
-			&& empty($_POST['work'])
-			&& empty($_POST['tool']))
-			{
-				$SET = 'p.Type = '.$_POST['type'].'';
-				$_GET['type'] = $_POST['type'];
-				$categories = $dbCategories->getAll();
-				$workParts = $dbWorks->getByType($_GET['type']);
-				$tools = $dbTools->getByType($_GET['type']);
-			}
+	if (isset($_GET['type'])) {
+		$_POST['type'] = (int)$_GET['type'];
+		$type = (int)$_GET['type'];
+	} else {
+		$type = (int)$_POST['type'];
+	}
 
-			///
-			elseif (empty($_GET['type'])
-			&& empty($_GET['work'])
-			&& !empty($_GET['tool']))
-			{
-				$SET = 'p.Tool = '.$_GET['tool'].'';
-				$categories = $dbCategories->getByTool($_GET['tool']);
-				$workParts = $dbWorks->getByType(NULL);
-				$tools = $dbTools->getAll();
-			}
-			elseif (empty($_POST['type']) 
-			&& empty($_POST['work'])
-			&& !empty($_POST['tool']))
-			{
-				$SET = 'p.Tool = '.$_POST['tool'].'';
-				$_GET['tool'] = $_POST['tool'];
-				$categories = $dbCategories->getByTool($_GET['tool']);
-				$workParts = $dbWorks->getByType(NULL);
-				$tools = $dbTools->getAll();
-			}
+	if (isset($_GET['work'])) {
+		$_POST['work'] = (int)$_GET['work'];
+		$work = (int)$_GET['work'];
+	} else {
+		$work = (int)$_POST['work'];
+	}
 
-			///
-			elseif (!empty($_GET['type'])
-			&& !empty($_GET['work'])
-			&& empty($_GET['tool']))
-			{
-				$SET = 'p.Type = '.$_GET['type'].' AND p.Work = '.$_GET['work'].'';
-				$categories = $dbCategories->getByWork($_GET['work']);
-				$workParts = $dbWorks->getByType($_GET['type']);
-				$tools = $dbTools->getByWork($_GET['work']);
-			}
-			elseif (!empty($_POST['type'])
-			&& !empty($_POST['work'])
-			&& empty($_POST['tool']))
-			{
-				$SET = 'p.Type = '.$_POST['type'].' AND p.Work = '.$_POST['work'].'';
-				$_GET['type'] = $_POST['type'];
-				$_GET['work'] = $_POST['work'];
-				$categories = $dbCategories->getByWork($_GET['work']);
-				$workParts = $dbWorks->getByType($_GET['type']);
-				$tools = $dbTools->getByWork($_GET['work']);
-			}
+	if (isset($_GET['tool'])) {
+		$_POST['tool'] = (int)$_GET['tool'];
+		$tool = (int)$_GET['tool'];
+	} else {
+		$tool = (int)$_POST['tool'];
+	}
 
-			///
-			elseif (!empty($_GET['type'])
-			&& empty($_GET['work'])
-			&& !empty($_GET['tool']))
-			{
-				$SET = 'p.Type = '.$_GET['type'].' AND p.Tool = '.$_GET['tool'].'';
-				$categories = $dbCategories->getByTool($_GET['tool']);
-				$workParts = $dbWorks->getByTool($_GET['tool']);
-				$tools = $dbTools->getByType($_GET['type']);
-			}
-			elseif (!empty($_POST['type'])
-			&& empty($_POST['work'])
-			&& !empty($_POST['tool']))
-			{
-				$SET = 'p.Type = '.$_POST['type'].' AND p.Tool = '.$_POST['tool'].'';
-				$_GET['type'] = $_POST['type'];
-				$_GET['tool'] = $_POST['tool'];
-				$categories = $dbCategories->getByTool($_GET['tool']);
-				$workParts = $dbWorks->getByTool($_GET['tool']);
-				$tools = $dbTools->getByType($_GET['type']);
-			}
+	if (empty($type) && !empty($work)) {
+		$work = null;
+	}
 
-			///
-			elseif (!empty($_GET['type'])
-			&& !empty($_GET['work'])
-			&& !empty($_GET['tool']))
-			{
-				$SET = 'p.Type = '.$_GET['type'].' AND p.Work = '.$_GET['work'].' AND p.Tool = '.$_GET['tool'].'';
-				$categories = $dbCategories->getByTool($_GET['tool']);
-				$workParts = $dbWorks->getByTool($_GET['tool']);
-				$tools = $dbTools->getByWork($_GET['work']);
-			}
-			elseif (!empty($_POST['type'])
-			&& !empty($_POST['work'])
-			&& !empty($_POST['tool']))
-			{
-				$SET = 'p.Type = '.$_POST['type'].' AND p.Work = '.$_POST['work'].' AND p.Tool = '.$_POST['tool'].'';
-				$_GET['type'] = $_POST['type'];
-				$_GET['work'] = $_POST['work'];
-				$_GET['tool'] = $_POST['tool'];
-				$categories = $dbCategories->getByTool($_GET['tool']);
-				$workParts = $dbWorks->getByTool($_GET['tool']);
-				$tools = $dbTools->getByWork($_GET['work']);
-			}
-			else
-			{
-				$SET = 'p.Type IS NOT NULL';
-				$categories = $dbCategories->getAll();
-				$workParts = $dbWorks->getByType(NULL);
-				$tools = $dbTools->getAll();
-			}
+	if (empty($type) && !empty($work) && !empty($tool)) {
+		$work = null;
+		$tool = null;
+	}
 
-			[$REQ_POSTS, $TOTAL_PAGE, $PAGE_NOW] = $dbPosts->getList($SET, 10);
+	$filteredPosts = new FilteredPosts($type, $work, $tool, 10);
+
+	if ($_GET['pg'] > $filteredPosts->getNumberPages()) {
+		$_GET['pg'] = $filteredPosts->getNumberPages();
+	} elseif ($_GET['pg'] < 0 || !intval($_GET['pg'])) {
+		$_GET['pg'] = 1;
+	}
+
+	$posts = $filteredPosts->getPosts($_GET['pg'] ?? 1);
+
+	$queryTypes = $filteredPosts->queryTypes;
+	$queryWorks = $filteredPosts->queryWorks;
+	$queryTools = $filteredPosts->queryTools;
 
 	require 'view/viewPosts.php';
 }

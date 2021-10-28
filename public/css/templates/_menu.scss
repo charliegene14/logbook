@@ -1,0 +1,213 @@
+header#menu {
+
+    $menu-opener-height: $rem-64;
+
+    z-index: $menu-index;
+    position: fixed;
+
+    background-color: $black;
+    opacity: 0.96;
+    backface-visibility: hidden;
+
+    a {display: inline-block; color: $white;}
+
+    div#menu-content {
+        position: relative;
+        display: none;
+        background-color: $black;
+
+        @media only screen and (min-width: 660px) {
+            position: absolute;
+            height: 100vh;
+            width: 50vw;
+            box-shadow: $rem-64 0 $rem-128 $white;
+        }
+
+        @media only screen and (min-width: 930px) {
+            width: 33vw;
+        }
+
+        @media only screen and (min-width: 1260px) {
+            width: 25vw;
+        }
+
+        h1 {
+            position: absolute;
+            top: 0;
+
+            width: 100vw;
+            height: $menu-opener-height;
+
+            border-bottom: $rem-2 dashed $white;
+            overflow: hidden;
+
+            background-color: $black;
+            z-index: 1000;
+            text-align: center;
+
+            @media only screen and (min-width: 660px) {
+                width: 100%;
+                text-align: right;
+                padding-right: $rem-16;
+            }
+
+            a {
+                position: relative;
+                top: $rem-16;
+
+                animation: menu-title-down 1s cubic-bezier(0, 0, 0.3, 1);
+
+                &.active {
+                    animation: menu-title-up 1s cubic-bezier(0, 0, 0.3, 1);
+                }
+            }
+        }
+
+        nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            max-height: 50%;
+
+            margin-right: $rem-8;
+            padding-right: $rem-8;
+
+            letter-spacing: $rem-2;
+            white-space: nowrap;
+            text-align: right;
+            overflow-y: scroll;
+            overflow-x: hidden;
+
+            &::-webkit-scrollbar {
+                width: $rem-4;
+            }
+            &::-webkit-scrollbar-thumb {
+                background: darken($grey, 25%);
+                border-radius: $rem-4;
+            }
+
+            @media only screen and (max-width: 660px) {
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            @media only screen and (min-width: 660px) {
+                right: 0;
+
+                a:hover {
+                    transition: transform 300ms ease-out, opacity 1s ease-out; 
+                    transform: scale(1.03);
+                    opacity: 0.6;
+                }
+            }
+        }
+
+        nav ul li {
+            font-size: $rem-28;
+
+            &.has-children .opener-sub-cat{
+                display: inline-block;
+
+                margin-left: $rem-8;
+                width: $rem-28;
+                height: $rem-28;
+
+                vertical-align: middle;
+                background-color: $white;
+                mask-image: url('/public/css/images/next.svg');
+                cursor: pointer;
+
+                &.active {
+                    transform: rotate(90deg);
+                    transition: transform 300ms ease-out;
+                }
+            }
+        }
+
+        nav ul li ul {
+            display: none;
+            opacity: 0;
+            position: relative;
+
+            li {
+                font-size: $rem-20;
+            }
+
+            &.active {
+                display: block;
+                opacity: 1;
+
+                animation: sub-cat-appears 300ms ease-out;
+                @keyframes sub-cat-appears {
+                    from {
+                        opacity: 0;
+                    }
+                    to {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+
+        div#footer-menu {
+            position: absolute;
+            height: $rem-64;
+            bottom: $rem-8;
+            right: 0;
+            overflow: hidden;
+
+            @media only screen and (min-width: 660px) {
+                bottom: $rem-64;
+            }
+        }
+
+        &.active {
+
+            @media only screen and (max-width: 660px) {
+                animation: menu-open-mobile 1s cubic-bezier(0, 0, 0.3, 1);
+                height: calc(100vh - #{$menu-opener-height});
+            }
+
+            @media only screen and (min-width: 660px) {
+                animation: menu-open-normal 1s cubic-bezier(0, 0, 0.3, 1);
+            }
+        }
+
+        &.inactive {
+            @media only screen and (max-width: 660px) {
+                animation: menu-close-mobile 1s cubic-bezier(0, 0, 0.3, 1);
+            }
+
+            @media only screen and (min-width: 660px) {
+                animation: menu-close-normal 1s cubic-bezier(0, 0, 0.3, 1);
+            }
+        }
+    }
+
+    div#menu-opener {
+        position: relative;
+        width: 100vw;
+        height: $menu-opener-height;
+        cursor: pointer;
+
+        @media only screen and (min-width: 660px) {
+            width: $menu-opener-height;
+            height: 100vh;
+        }
+
+        div#menu-image {
+            width: $rem-32;
+            height: $rem-32;
+
+            background-color: $white;
+            mask-image: url('/public/css/images/menu.svg');
+            @include center(relative);
+
+            transition: mask-image 1.5s;
+
+            &.active {
+                mask-image: url('/public/css/images/cancel.svg');
+            }
+        }
+    }
+}

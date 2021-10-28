@@ -1,98 +1,102 @@
-<?php  $pageTitle = $PROJ['titleProject']; ?>
-<?php  ob_start(); ?>
+<?php require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/controller/viewFullproject.php'; ?>
 
-<section class="fullproject">
-	<div class="header">
-		<div class="icon">
+<section id="fullproject">
+
+		<div class="title-section">
 			<img src="public/img/projects/<?= $PROJ['idProject'] ?>.png" alt="<?= $PROJ['titleProject'] ?>" />
-		</div>
+			<div id="header-project">
+				<h1 style="color: <?= $PROJ['colorCat'] ?>"><?= $PROJ['titleProject'] ?>.</h1>
 
-		<div class="info">
-			<h2 style="color: <?= $PROJ['colorCat'] ?>"><b><?= $PROJ['titleProject'] ?></b></h2>
-			<p>
-				<b>Genre(s): </b><?= $PROJ['kindProject'] ?>
-				<b>Plateforme(s): </b><?= $PROJ['platformProject'] ?><br />
-				<b>Date de commencement: </b><?= $regex->date($PROJ['dateProject']) ?><br />
-				<b>Version actuelle: </b>
+				<div id="link-header-project">
+					<a onClick="goToByScroll('preview')">Résumé.</a>
+					<a onClick="goToByScroll('stats')">Statistiques.</a>
+					<a onClick="goToByScroll('file')">Fiche.</a>
+				</div>
+			</div>
+		</div>
+	
+	<div class="content-section">
+		<article id="info">
+			<div class="blur-bg"></div>
+			<p><b>Genre(s): </b><?= $PROJ['kindProject'] ?></p>
+			<p><b>Plateforme(s): </b><?= $PROJ['platformProject'] ?></p>
+			<p><b>Date de commencement: </b><?= $regex->date($PROJ['dateProject']) ?></p>
+			<p><b>Version actuelle: </b>
 				<?php
 				if ($lastVersion = $dbProj->getLastVersion($PROJ['idProject'])) {
-					echo '<a href="index.php?view=versions&id=' . $PROJ['idProject'] . '#' . $lastVersion['theVersion'] . '">' . $lastVersion['theVersion'] . '</a> - ';
-					echo '<span class="liltxt">';
-					echo $regex->date($lastVersion['dateVersion']) . ' (<a href="index.php?view=versions&id=' . $PROJ['idProject'] . '">historique</a>)</span>';
+					echo '<a href="/#!/versions/' . $PROJ['idProject'] . '#' . $lastVersion['theVersion'] . '">' . $lastVersion['theVersion'] . '</a> - ';
+					echo $regex->date($lastVersion['dateVersion']) . ' (<a href="/#!/versions/' . $PROJ['idProject'] . '">historique</a>)';
 				} else {
 					echo 'Aucune version disponible.';
 				}
-				?><br />
-				<b>Premier article: </b>
+				?>
+			</p>
+			<p><b>Premier article: </b>
 				<?php
 				if ($firstPost = $dbProj->getFirstPost($PROJ['idProject'])) {
-					echo '<a href="index.php?view=fullpost&id=' . $firstPost['idPost'] . '">' . $firstPost['titlePost'] . '</a><span class="liltxt"> (le ' . $regex->date($firstPost['datePost']) . ')</span>';
+					echo '<a href="/#!/posts/' . $firstPost['idPost'] . '">' . $firstPost['titlePost'] . '</a>(le ' . $regex->date($firstPost['datePost']) . ')';
 				} else {
-					echo 'Aucun article disponible';
+					echo 'Aucun article disponible.';
 				}
-				?><br />
-				<b>Dernier article: </b>
+				?>
+			</p>
+			<p><b>Dernier article: </b>
 				<?php
 				if ($lastPost = $dbProj->getLastPost($PROJ['idProject'])) {
-					echo '<a href="index.php?view=fullpost&id=' . $lastPost['idPost'] . '">' . $lastPost['titlePost'] . '</a><span class="liltxt"> (le ' . $regex->date($lastPost['datePost']) . ')</span>';
+					echo '<a href="/#!/posts/' . $lastPost['idPost'] . '">' . $lastPost['titlePost'] . '</a>(le ' . $regex->date($lastPost['datePost']) . ')';
 				} else {
-					echo 'Aucun article disponible';
+					echo 'Aucun article disponible.';
 				}
-				?><br />
-				<br />
-				<i><a href="index.php?view=versions&id=<?= $PROJ['idProject'] ?>">Voir l'historique des versions</a></i>
+				?>
 			</p>
+			<p><i><a href="/#!/versions/<?= $PROJ['idProject'] ?>">Voir l'historique des versions</a></i></p>
+		</article>
+
+		<div class="main-arrow-down" onClick="goToByScroll('preview')"></div>
+
+		<article id="preview">
+			<h2>Résumé.</h2>
+			<p><?= $PROJ['previewProject'] ?></p>
+		</article>
+
+		<div id="file-stats-container">
+
+			<article id="stats">
+					<h2>Stats.</h2>
+					<p><strong>Nombre d'articles: </strong><?= $totalPosts ?></p>
+					<p><strong>Temps total passé: </strong><?= $totalTime ?></p>
+					<p><strong><i>Passez la souris pour plus de détails !</i></strong></p>
+
+					<div class="chart">
+						<canvas id="chartParts"></canvas>
+						<div class="centerDonutChart">
+							<h3>Parties</h3>
+							<p>heure/part</p>
+						</div>
+					</div>
+					<div class="chart">
+						<canvas id="chartTools"></canvas>
+						<div class="centerDonutChart">
+							<h3>Outils</h3>
+							<p>heure/outil</p>
+						</div>
+					</div>
+			</article>
+
+			<article id="file">
+					<h2>Fiche.</h2>
+					<div id="file-project">
+						<?= $PROJ['descProject'] ?>
+					</div>
+			</article>
 		</div>
 	</div>
-
-
-	<div class="preview">
-		<p><?= $PROJ['previewProject'] ?></p>
-	</div>
-
-	<article>
-		<div class="file">
-			<h2>Fiche</h2>
-			<p>
-				<?= $PROJ['descProject'] ?>
-			</p>
-		</div>
-
-		<div class="stats">
-			<h2>Stats</h2>
-			<p>
-				<strong>Nombre d'articles: </strong><?= $totalPosts ?><br />
-				<strong>Temps total passé: </strong><?= $totalTime ?><br />
-			</p>
-
-			<p>
-				<strong>Découpage du projet: </strong><br />
-				<i>Passez la souris pour plus de détails !</i>
-			</p>
-
-			<div class="chart">
-				<canvas id="chartParts"></canvas>
-				<div class="centerDonutChart">
-					<h3>Parties</h3>
-					<p>heure/part</p>
-				</div>
-			</div>
-			<div class="chart">
-				<canvas id="chartTools"></canvas>
-				<div class="centerDonutChart">
-					<h3>Outils</h3>
-					<p>heure/outil</p>
-				</div>
-			</div>
-
-		</div>
-	</article>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@next"></script>
-
 <script type="text/javascript">
+
+	document.title = 'Portfolio: <?= $PROJ['titleProject'] ?>';
+
 	Chart.register({
 		ChartDataLabels,
 	});
@@ -104,7 +108,7 @@
 		return colorWithoutAlpha;
 	}
 
-	const colorScheme = [
+	var colorScheme = [
 		'rgba(30, 50, 49,0.65)',
 		'rgba(72, 86, 101,0.65)',
 		'rgba(142, 124, 147,0.65)',
@@ -169,8 +173,8 @@
 					}
 				}
 			}
-		},
-	};
+		}
+	}
 
 	var ctxParts = document.getElementById('chartParts').getContext('2d');
 	var ctxTools = document.getElementById('chartTools').getContext('2d');
@@ -229,6 +233,3 @@
 	chartParts.update();
 	chartTools.update();
 </script>
-
-<?php  $pageContent = ob_get_clean(); ?>
-<?php  require('template.php'); ?>

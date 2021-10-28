@@ -1,145 +1,70 @@
-<?php 
-require_once 'model/dbPosts.php';
-require_once 'model/dbTools.php';
-require_once 'model/dbWorks.php';
-require_once 'model/dbCategories.php';
-require_once 'model/regex.php';
+<?php
 
-function viewPosts()
-{
-			$MAX_LENGTH = 400;
+try {
+	require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/model/passChecking.php'; passCheck();
+	require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/regex.php';
+	require_once realpath($_SERVER['DOCUMENT_ROOT']). '/model/FilteredPosts.php';
+	
+	$MAX_LENGTH = 400;
+	$regex = new Regex();
 
-			$regex = new Regex();
-			$dbPosts = new dbPosts();
-			$dbTools = new dbTools();
-			$dbWorks = new dbWorks();
-			$dbCategories = new dbCategories();
+	if (isset($_GET['type']) AND !intval($_GET['type'])
+	OR isset($_GET['work']) AND !intval($_GET['work'])
+	OR isset($_GET['tool']) AND !intval($_GET['tool'])
+	OR isset($_GET['pg']) AND !intval($_GET['pg']))
+	{
+		throw new Exception('Désolé, une erreur est survenue');
+	}
 
-			if (isset($_GET['type']) AND !intval($_GET['type'])
-			OR isset($_GET['work']) AND !intval($_GET['work'])
-			OR isset($_GET['tool']) AND !intval($_GET['tool'])
-			OR isset($_GET['pg']) AND !intval($_GET['pg']))
-			{
-				throw new Exception('Désolé, une erreur est survenue');
-			}
+	if (isset($_GET['type'])) {
+		$_POST['type'] = (int)$_GET['type'];
+		$type = (int)$_GET['type'];
+	} else {
+		$type = (int)$_POST['type'];
+	}
 
-			///
-			if (!empty($_GET['type'])
-			&& empty($_GET['work'])
-			&& empty($_GET['tool']))
-			{
-				$SET = 'p.Type = '.$_GET['type'].'';
-				$categories = $dbCategories->getAll();
-				$workParts = $dbWorks->getByType($_GET['type']);
-				$tools = $dbTools->getByType($_GET['type']);
-			}
-			elseif (!empty($_POST['type'])
-			&& empty($_POST['work'])
-			&& empty($_POST['tool']))
-			{
-				$SET = 'p.Type = '.$_POST['type'].'';
-				$_GET['type'] = $_POST['type'];
-				$categories = $dbCategories->getAll();
-				$workParts = $dbWorks->getByType($_GET['type']);
-				$tools = $dbTools->getByType($_GET['type']);
-			}
+	if (isset($_GET['work'])) {
+		$_POST['work'] = (int)$_GET['work'];
+		$work = (int)$_GET['work'];
+	} else {
+		$work = (int)$_POST['work'];
+	}
 
-			///
-			elseif (empty($_GET['type'])
-			&& empty($_GET['work'])
-			&& !empty($_GET['tool']))
-			{
-				$SET = 'p.Tool = '.$_GET['tool'].'';
-				$categories = $dbCategories->getByTool($_GET['tool']);
-				$workParts = $dbWorks->getByType(NULL);
-				$tools = $dbTools->getAll();
-			}
-			elseif (empty($_POST['type']) 
-			&& empty($_POST['work'])
-			&& !empty($_POST['tool']))
-			{
-				$SET = 'p.Tool = '.$_POST['tool'].'';
-				$_GET['tool'] = $_POST['tool'];
-				$categories = $dbCategories->getByTool($_GET['tool']);
-				$workParts = $dbWorks->getByType(NULL);
-				$tools = $dbTools->getAll();
-			}
+	if (isset($_GET['tool'])) {
+		$_POST['tool'] = (int)$_GET['tool'];
+		$tool = (int)$_GET['tool'];
+	} else {
+		$tool = (int)$_POST['tool'];
+	}
 
-			///
-			elseif (!empty($_GET['type'])
-			&& !empty($_GET['work'])
-			&& empty($_GET['tool']))
-			{
-				$SET = 'p.Type = '.$_GET['type'].' AND p.Work = '.$_GET['work'].'';
-				$categories = $dbCategories->getByWork($_GET['work']);
-				$workParts = $dbWorks->getByType($_GET['type']);
-				$tools = $dbTools->getByWork($_GET['work']);
-			}
-			elseif (!empty($_POST['type'])
-			&& !empty($_POST['work'])
-			&& empty($_POST['tool']))
-			{
-				$SET = 'p.Type = '.$_POST['type'].' AND p.Work = '.$_POST['work'].'';
-				$_GET['type'] = $_POST['type'];
-				$_GET['work'] = $_POST['work'];
-				$categories = $dbCategories->getByWork($_GET['work']);
-				$workParts = $dbWorks->getByType($_GET['type']);
-				$tools = $dbTools->getByWork($_GET['work']);
-			}
+	if (empty($type) && !empty($work)) {
+		$work = null;
+	}
 
-			///
-			elseif (!empty($_GET['type'])
-			&& empty($_GET['work'])
-			&& !empty($_GET['tool']))
-			{
-				$SET = 'p.Type = '.$_GET['type'].' AND p.Tool = '.$_GET['tool'].'';
-				$categories = $dbCategories->getByTool($_GET['tool']);
-				$workParts = $dbWorks->getByTool($_GET['tool']);
-				$tools = $dbTools->getByType($_GET['type']);
-			}
-			elseif (!empty($_POST['type'])
-			&& empty($_POST['work'])
-			&& !empty($_POST['tool']))
-			{
-				$SET = 'p.Type = '.$_POST['type'].' AND p.Tool = '.$_POST['tool'].'';
-				$_GET['type'] = $_POST['type'];
-				$_GET['tool'] = $_POST['tool'];
-				$categories = $dbCategories->getByTool($_GET['tool']);
-				$workParts = $dbWorks->getByTool($_GET['tool']);
-				$tools = $dbTools->getByType($_GET['type']);
-			}
+	if (empty($type) && !empty($work) && !empty($tool)) {
+		$work = null;
+		$tool = null;
+	}
 
-			///
-			elseif (!empty($_GET['type'])
-			&& !empty($_GET['work'])
-			&& !empty($_GET['tool']))
-			{
-				$SET = 'p.Type = '.$_GET['type'].' AND p.Work = '.$_GET['work'].' AND p.Tool = '.$_GET['tool'].'';
-				$categories = $dbCategories->getByTool($_GET['tool']);
-				$workParts = $dbWorks->getByTool($_GET['tool']);
-				$tools = $dbTools->getByWork($_GET['work']);
-			}
-			elseif (!empty($_POST['type'])
-			&& !empty($_POST['work'])
-			&& !empty($_POST['tool']))
-			{
-				$SET = 'p.Type = '.$_POST['type'].' AND p.Work = '.$_POST['work'].' AND p.Tool = '.$_POST['tool'].'';
-				$_GET['type'] = $_POST['type'];
-				$_GET['work'] = $_POST['work'];
-				$_GET['tool'] = $_POST['tool'];
-				$categories = $dbCategories->getByTool($_GET['tool']);
-				$workParts = $dbWorks->getByTool($_GET['tool']);
-				$tools = $dbTools->getByWork($_GET['work']);
-			}
-			else
-			{
-				$SET = 'p.Type IS NOT NULL';
-				$categories = $dbCategories->getAll();
-				$workParts = $dbWorks->getByType(NULL);
-				$tools = $dbTools->getAll();
-			}
+	$filteredPosts = new FilteredPosts($type, $work, $tool);
 
-			[$REQ_POSTS, $TOTAL_PAGE, $PAGE_NOW] = $dbPosts->getList($SET, 4);
+	if (isset($_GET['pg'])) {
+		if ($_GET['pg'] > $filteredPosts->getNumberPages()) {
+			$_GET['pg'] = $filteredPosts->getNumberPages();
+		} elseif ($_GET['pg'] < 0 || !intval($_GET['pg'])) {
+			$_GET['pg'] = 1;
+		}
+	} else {
+		$_GET['pg'] = 1;
+	}
 
-	require 'view/viewPosts.php';
+	$posts = $filteredPosts->getPosts($_GET['pg'] ?? 1);
+
+	$queryTypes = $filteredPosts->queryTypes;
+	$queryWorks = $filteredPosts->queryWorks;
+	$queryTools = $filteredPosts->queryTools;
+
+} catch(Exception $e) {
+
+	require_once realpath($_SERVER["DOCUMENT_ROOT"]).'/view/exception.php';
 }

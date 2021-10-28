@@ -1,0 +1,10 @@
+@keyframes section-right-appears {
+    from {
+        left: 100vw;
+        opacity: 0;
+    }
+    to {
+        left: 0;
+        opacity: 1;
+    }
+}
