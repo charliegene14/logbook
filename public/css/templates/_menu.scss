@@ -150,11 +150,13 @@ header#menu {
         }
 
         div#footer-menu {
+            display: inline-block;
             position: absolute;
             height: $rem-64;
             bottom: $rem-8;
             right: 0;
             overflow: hidden;
+            text-align: center;
 
             @media only screen and (min-width: 660px) {
                 bottom: $rem-64;

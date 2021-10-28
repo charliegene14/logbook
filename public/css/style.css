@@ -587,11 +587,13 @@ header#menu div#menu-content nav ul li ul.active {
   }
 }
 header#menu div#menu-content div#footer-menu {
+  display: inline-block;
   position: absolute;
   height: 4rem;
   bottom: 0.5rem;
   right: 0;
   overflow: hidden;
+  text-align: center;
 }
 @media only screen and (min-width: 660px) {
   header#menu div#menu-content div#footer-menu {
