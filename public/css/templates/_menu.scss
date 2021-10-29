@@ -150,13 +150,30 @@ header#menu {
         }
 
         div#footer-menu {
-            display: inline-block;
+            display: flex;
+            width: 100%;
             position: absolute;
             height: $rem-64;
             bottom: $rem-8;
-            right: 0;
-            overflow: hidden;
-            text-align: center;
+            justify-content: center;
+
+            .svg-github {
+                width: $rem-32;
+                height: $rem-32;
+                background-color: $white;
+                mask-image: url('/public/img/tools/svg-logos/github.svg');
+                margin-right: $rem-8;
+                margin-left: $rem-8;
+            }
+
+            .svg-linkedin {
+                width: $rem-32;
+                height: $rem-32;
+                background-color: $white;
+                mask-image: url('/public/img/tools/svg-logos/linkedin.svg');
+                margin-right: $rem-8;
+                margin-left: $rem-8;
+            }
 
             @media only screen and (min-width: 660px) {
                 bottom: $rem-64;

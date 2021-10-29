@@ -587,13 +587,30 @@ header#menu div#menu-content nav ul li ul.active {
   }
 }
 header#menu div#menu-content div#footer-menu {
-  display: inline-block;
+  display: flex;
+  width: 100%;
   position: absolute;
   height: 4rem;
   bottom: 0.5rem;
-  right: 0;
-  overflow: hidden;
-  text-align: center;
+  justify-content: center;
+}
+header#menu div#menu-content div#footer-menu .svg-github {
+  width: 2rem;
+  height: 2rem;
+  background-color: #F6F3EE;
+  -webkit-mask-image: url("/public/img/tools/svg-logos/github.svg");
+          mask-image: url("/public/img/tools/svg-logos/github.svg");
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+}
+header#menu div#menu-content div#footer-menu .svg-linkedin {
+  width: 2rem;
+  height: 2rem;
+  background-color: #F6F3EE;
+  -webkit-mask-image: url("/public/img/tools/svg-logos/linkedin.svg");
+          mask-image: url("/public/img/tools/svg-logos/linkedin.svg");
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
 }
 @media only screen and (min-width: 660px) {
   header#menu div#menu-content div#footer-menu {

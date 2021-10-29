@@ -40,7 +40,14 @@
         </ul>	
     </nav>
 
-    <div id="footer-menu"><?= $info->getContent('Foot') ?></div>
+    <div id="footer-menu">
+        <a href="https://github.com/charliegene14/">
+            <div class="svg-github"></div>
+        </a>
+        <a href="https://www.linkedin.com/in/charliegene/">
+            <div class="svg-linkedin"></div>
+        </a>
+    </div>
 </div>
 
 <div id="menu-opener">
