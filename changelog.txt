@@ -1,0 +1,19 @@
+[1.40] - 29/10/2021
+
+## Added
+- Be able to choose many tools in a post
+- Be able to add a picture with a tool
+- Touch screen friendly in Home and Portfolio pages (Swiper JS)
+
+## Changed
+- Pagination's display
+- Home Page
+- A whole new design
+
+## Deleted
+
+## Unreleased - For the next versions.
+- JS button for BBCode posts writing.
+- JS dynamic uploading for images posts and pages.
+- Confirm before any delete.
+- Searching bar.
